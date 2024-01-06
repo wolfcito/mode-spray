@@ -1,32 +1,32 @@
-import { useReducer } from "react";
-import { ContractReadMethods } from "./ContractReadMethods";
-import { ContractVariables } from "./ContractVariables";
-import { ContractWriteMethods } from "./ContractWriteMethods";
-import { Address, Balance } from "~~/components/scaffold-eth";
-import { useDeployedContractInfo, useNetworkColor } from "~~/hooks/scaffold-eth";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { ContractName } from "~~/utils/scaffold-eth/contract";
+import { useReducer } from 'react'
+import { ContractReadMethods } from './ContractReadMethods'
+import { ContractVariables } from './ContractVariables'
+import { ContractWriteMethods } from './ContractWriteMethods'
+import { Address, Balance } from '~~/components/scaffold-eth'
+import { useDeployedContractInfo, useNetworkColor } from '~~/hooks/scaffold-eth'
+import { useTargetNetwork } from '~~/hooks/scaffold-eth/useTargetNetwork'
+import { ContractName } from '~~/utils/scaffold-eth/contract'
 
 type ContractUIProps = {
-  contractName: ContractName;
-  className?: string;
-};
+  contractName: ContractName
+  className?: string
+}
 
 /**
  * UI component to interface with deployed contracts.
  **/
-export const ContractUI = ({ contractName, className = "" }: ContractUIProps) => {
-  const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(value => !value, false);
-  const { targetNetwork } = useTargetNetwork();
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName);
-  const networkColor = useNetworkColor();
+export const ContractUI = ({ contractName, className = '' }: ContractUIProps) => {
+  const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(value => !value, false)
+  const { targetNetwork } = useTargetNetwork()
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName)
+  const networkColor = useNetworkColor()
 
   if (deployedContractLoading) {
     return (
       <div className="mt-14">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
-    );
+    )
   }
 
   if (!deployedContractData) {
@@ -34,7 +34,7 @@ export const ContractUI = ({ contractName, className = "" }: ContractUIProps) =>
       <p className="text-3xl mt-14">
         {`No contract found by the name of "${contractName}" on chain "${targetNetwork.name}"!`}
       </p>
-    );
+    )
   }
 
   return (
@@ -54,7 +54,7 @@ export const ContractUI = ({ contractName, className = "" }: ContractUIProps) =>
             </div>
             {targetNetwork && (
               <p className="my-0 text-sm">
-                <span className="font-bold">Network</span>:{" "}
+                <span className="font-bold">Network</span>:{' '}
                 <span style={{ color: networkColor }}>{targetNetwork.name}</span>
               </p>
             )}
@@ -97,5 +97,5 @@ export const ContractUI = ({ contractName, className = "" }: ContractUIProps) =>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

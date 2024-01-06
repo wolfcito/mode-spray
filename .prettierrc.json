@@ -4,5 +4,7 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "importOrder": ["^react$", "^next/(.*)$", "<THIRD_PARTY_MODULES>", "^@heroicons/(.*)$", "^~~/(.*)$"],
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "semi": false,
+  "singleQuote": true
 }

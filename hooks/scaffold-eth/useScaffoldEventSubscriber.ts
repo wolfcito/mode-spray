@@ -1,9 +1,9 @@
-import { useTargetNetwork } from "./useTargetNetwork";
-import { Abi, ExtractAbiEventNames } from "abitype";
-import { Log } from "viem";
-import { useContractEvent } from "wagmi";
-import { addIndexedArgsToEvent, useDeployedContractInfo } from "~~/hooks/scaffold-eth";
-import { ContractAbi, ContractName, UseScaffoldEventConfig } from "~~/utils/scaffold-eth/contract";
+import { useTargetNetwork } from './useTargetNetwork'
+import { Abi, ExtractAbiEventNames } from 'abitype'
+import { Log } from 'viem'
+import { useContractEvent } from 'wagmi'
+import { addIndexedArgsToEvent, useDeployedContractInfo } from '~~/hooks/scaffold-eth'
+import { ContractAbi, ContractName, UseScaffoldEventConfig } from '~~/utils/scaffold-eth/contract'
 
 /**
  * Wrapper around wagmi's useEventSubscriber hook which automatically loads (by name) the contract ABI and
@@ -21,12 +21,12 @@ export const useScaffoldEventSubscriber = <
   eventName,
   listener,
 }: UseScaffoldEventConfig<TContractName, TEventName>) => {
-  const { data: deployedContractData } = useDeployedContractInfo(contractName);
-  const { targetNetwork } = useTargetNetwork();
+  const { data: deployedContractData } = useDeployedContractInfo(contractName)
+  const { targetNetwork } = useTargetNetwork()
 
-  const addIndexedArgsToLogs = (logs: Log[]) => logs.map(addIndexedArgsToEvent);
+  const addIndexedArgsToLogs = (logs: Log[]) => logs.map(addIndexedArgsToEvent)
   const listenerWithIndexedArgs = (logs: Log[]) =>
-    listener(addIndexedArgsToLogs(logs) as Parameters<typeof listener>[0]);
+    listener(addIndexedArgsToLogs(logs) as Parameters<typeof listener>[0])
 
   return useContractEvent({
     address: deployedContractData?.address,
@@ -34,5 +34,5 @@ export const useScaffoldEventSubscriber = <
     chainId: targetNetwork.id,
     listener: listenerWithIndexedArgs,
     eventName,
-  });
-};
+  })
+}

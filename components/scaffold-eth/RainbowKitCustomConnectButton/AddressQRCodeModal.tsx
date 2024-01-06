@@ -1,11 +1,11 @@
-import { QRCodeSVG } from "qrcode.react";
-import { Address as AddressType } from "viem";
-import { Address } from "~~/components/scaffold-eth";
+import { QRCodeSVG } from 'qrcode.react'
+import { Address as AddressType } from 'viem'
+import { Address } from '~~/components/scaffold-eth'
 
 type AddressQRCodeModalProps = {
-  address: AddressType;
-  modalId: string;
-};
+  address: AddressType
+  modalId: string
+}
 
 export const AddressQRCodeModal = ({ address, modalId }: AddressQRCodeModalProps) => {
   return (
@@ -29,5 +29,5 @@ export const AddressQRCodeModal = ({ address, modalId }: AddressQRCodeModalProps
         </label>
       </div>
     </>
-  );
-};
+  )
+}

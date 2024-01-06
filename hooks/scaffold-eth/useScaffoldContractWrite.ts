@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { useTargetNetwork } from "./useTargetNetwork";
-import { Abi, ExtractAbiFunctionNames } from "abitype";
-import { useContractWrite, useNetwork } from "wagmi";
-import { getParsedError } from "~~/components/scaffold-eth";
-import { useDeployedContractInfo, useTransactor } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
-import { ContractAbi, ContractName, UseScaffoldWriteConfig } from "~~/utils/scaffold-eth/contract";
+import { useState } from 'react'
+import { useTargetNetwork } from './useTargetNetwork'
+import { Abi, ExtractAbiFunctionNames } from 'abitype'
+import { useContractWrite, useNetwork } from 'wagmi'
+import { getParsedError } from '~~/components/scaffold-eth'
+import { useDeployedContractInfo, useTransactor } from '~~/hooks/scaffold-eth'
+import { notification } from '~~/utils/scaffold-eth'
+import { ContractAbi, ContractName, UseScaffoldWriteConfig } from '~~/utils/scaffold-eth/contract'
 
-type UpdatedArgs = Parameters<ReturnType<typeof useContractWrite<Abi, string, undefined>>["writeAsync"]>[0];
+type UpdatedArgs = Parameters<ReturnType<typeof useContractWrite<Abi, string, undefined>>['writeAsync']>[0]
 
 /**
  * Wrapper around wagmi's useContractWrite hook which automatically loads (by name) the contract ABI and address from
@@ -22,7 +22,7 @@ type UpdatedArgs = Parameters<ReturnType<typeof useContractWrite<Abi, string, un
  */
 export const useScaffoldContractWrite = <
   TContractName extends ContractName,
-  TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>, "nonpayable" | "payable">,
+  TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>, 'nonpayable' | 'payable'>,
 >({
   contractName,
   functionName,
@@ -32,11 +32,11 @@ export const useScaffoldContractWrite = <
   blockConfirmations,
   ...writeConfig
 }: UseScaffoldWriteConfig<TContractName, TFunctionName>) => {
-  const { data: deployedContractData } = useDeployedContractInfo(contractName);
-  const { chain } = useNetwork();
-  const writeTx = useTransactor();
-  const [isMining, setIsMining] = useState(false);
-  const { targetNetwork } = useTargetNetwork();
+  const { data: deployedContractData } = useDeployedContractInfo(contractName)
+  const { chain } = useNetwork()
+  const writeTx = useTransactor()
+  const [isMining, setIsMining] = useState(false)
+  const { targetNetwork } = useTargetNetwork()
 
   const wagmiContractWrite = useContractWrite({
     chainId: targetNetwork.id,
@@ -46,32 +46,32 @@ export const useScaffoldContractWrite = <
     args: args as unknown[],
     value: value,
     ...writeConfig,
-  });
+  })
 
   const sendContractWriteTx = async ({
     args: newArgs,
     value: newValue,
     ...otherConfig
   }: {
-    args?: UseScaffoldWriteConfig<TContractName, TFunctionName>["args"];
-    value?: UseScaffoldWriteConfig<TContractName, TFunctionName>["value"];
+    args?: UseScaffoldWriteConfig<TContractName, TFunctionName>['args']
+    value?: UseScaffoldWriteConfig<TContractName, TFunctionName>['value']
   } & UpdatedArgs = {}) => {
     if (!deployedContractData) {
-      notification.error("Target Contract is not deployed, did you forget to run `yarn deploy`?");
-      return;
+      notification.error('Target Contract is not deployed, did you forget to run `yarn deploy`?')
+      return
     }
     if (!chain?.id) {
-      notification.error("Please connect your wallet");
-      return;
+      notification.error('Please connect your wallet')
+      return
     }
     if (chain?.id !== targetNetwork.id) {
-      notification.error("You are on the wrong network");
-      return;
+      notification.error('You are on the wrong network')
+      return
     }
 
     if (wagmiContractWrite.writeAsync) {
       try {
-        setIsMining(true);
+        setIsMining(true)
         const writeTxResult = await writeTx(
           () =>
             wagmiContractWrite.writeAsync({
@@ -80,25 +80,25 @@ export const useScaffoldContractWrite = <
               ...otherConfig,
             }),
           { onBlockConfirmation, blockConfirmations },
-        );
+        )
 
-        return writeTxResult;
+        return writeTxResult
       } catch (e: any) {
-        const message = getParsedError(e);
-        notification.error(message);
+        const message = getParsedError(e)
+        notification.error(message)
       } finally {
-        setIsMining(false);
+        setIsMining(false)
       }
     } else {
-      notification.error("Contract writer error. Try again.");
-      return;
+      notification.error('Contract writer error. Try again.')
+      return
     }
-  };
+  }
 
   return {
     ...wagmiContractWrite,
     isMining,
     // Overwrite wagmi's write async
     writeAsync: sendContractWriteTx,
-  };
-};
+  }
+}

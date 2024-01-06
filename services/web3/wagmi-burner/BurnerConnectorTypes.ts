@@ -1,10 +1,10 @@
-import { StaticJsonRpcProvider } from "@ethersproject/providers";
-import { ConnectorData } from "wagmi";
+import { StaticJsonRpcProvider } from '@ethersproject/providers'
+import { ConnectorData } from 'wagmi'
 
 export type BurnerConnectorOptions = {
-  defaultChainId: number;
-};
+  defaultChainId: number
+}
 
 export type BurnerConnectorData = ConnectorData & {
-  provider: StaticJsonRpcProvider;
-};
+  provider: StaticJsonRpcProvider
+}

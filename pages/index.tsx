@@ -1,98 +1,98 @@
-import { SetStateAction, useState } from "react";
-import clsx from "clsx";
-import { MetaHeader } from "~~/components/MetaHeader";
-import { getParsedError } from "~~/components/scaffold-eth";
-import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
+import { SetStateAction, useState } from 'react'
+import { Button, ButtonLink } from '~~/components/button'
+import { MetaHeader } from '~~/components/header'
+import { getParsedError } from '~~/components/scaffold-eth'
+import { useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
+import { notification } from '~~/utils/scaffold-eth'
 
 interface MyDictionaryProps {
-  [key: string]: bigint;
+  [key: string]: bigint
 }
 
 export default function Home() {
-  const [confirmtnxs, setConfirmtnxs] = useState<boolean>(false);
-  const [alltxns, setAlltxns] = useState<string>("");
-  const [everyTxns, setEveryTxns] = useState<MyDictionaryProps>({});
-  const [allAddress, setAllAddress] = useState<string[]>([]);
-  const [allValues, setAllValues] = useState<bigint[]>([]);
+  const [confirmtnxs, setConfirmtnxs] = useState<boolean>(false)
+  const [alltxns, setAlltxns] = useState<string>('')
+  const [everyTxns, setEveryTxns] = useState<MyDictionaryProps>({})
+  const [allAddress, setAllAddress] = useState<string[]>([])
+  const [allValues, setAllValues] = useState<bigint[]>([])
 
-  const [totalcost, setTotalcost] = useState(BigInt("0"));
+  const [totalcost, setTotalcost] = useState(BigInt('0'))
 
   const { writeAsync, isLoading, isSuccess } = useScaffoldContractWrite({
-    contractName: "ModeDisperse",
-    functionName: "disperseEther",
+    contractName: 'ModeDisperse',
+    functionName: 'disperseEther',
     args: [allAddress, allValues],
     value: totalcost,
-  });
+  })
 
   const cleantxns = () => {
-    setTotalcost(BigInt("0"));
-    setAllAddress([]);
-    setAllAddress([]);
-    setAllValues([]);
+    setTotalcost(BigInt('0'))
+    setAllAddress([])
+    setAllAddress([])
+    setAllValues([])
 
-    setEveryTxns({});
-    setAlltxns("");
-    setConfirmtnxs(false);
-  };
+    setEveryTxns({})
+    setAlltxns('')
+    setConfirmtnxs(false)
+  }
 
   const updateValue = (e: { target: { value: SetStateAction<string> } }) => {
-    const contentTemp = String(e.target.value);
+    const contentTemp = String(e.target.value)
 
-    contentValidation({ contentfull: contentTemp });
-  };
+    contentValidation({ contentfull: contentTemp })
+  }
 
   const contentValidation = ({ contentfull }: { contentfull: string }) => {
-    setAllValues([]);
-    setConfirmtnxs(false);
+    setAllValues([])
+    setConfirmtnxs(false)
 
     try {
-      const rows = contentfull.split("\n");
-      const allTxns: MyDictionaryProps = {};
+      const rows = contentfull.split('\n')
+      const allTxns: MyDictionaryProps = {}
       rows.forEach(element => {
-        const onerow = element.split(/[,\s;]+/);
-        if (onerow[0].startsWith("0x") && onerow[0].length === 42) {
-          allTxns[onerow[0]] = BigInt(onerow[1]);
-          allAddress.push(onerow[0]);
-          allValues.push(BigInt(onerow[1]));
+        const onerow = element.split(/[,\s;]+/)
+        if (onerow[0].startsWith('0x') && onerow[0].length === 42) {
+          allTxns[onerow[0]] = BigInt(onerow[1])
+          allAddress.push(onerow[0])
+          allValues.push(BigInt(onerow[1]))
         }
-      });
+      })
 
-      const allowContinue = Object.keys(allTxns).length > 0;
+      const allowContinue = Object.keys(allTxns).length > 0
       if (!allowContinue) {
-        notification.warning("Please check the wallet and amount");
-        return;
+        notification.warning('Please check the wallet and amount')
+        return
       }
 
-      setConfirmtnxs(allowContinue);
-      setEveryTxns(allTxns);
-      setAlltxns(contentfull);
-      setTotalcost(allValues.reduce((a, b) => a + b, BigInt(0)));
+      setConfirmtnxs(allowContinue)
+      setEveryTxns(allTxns)
+      setAlltxns(contentfull)
+      setTotalcost(allValues.reduce((a, b) => a + b, BigInt(0)))
     } catch (e) {
-      console.error("Invalid format");
-      setConfirmtnxs(false);
+      console.error('Invalid format')
+      setConfirmtnxs(false)
     }
-  };
+  }
 
   const sprayEth = async () => {
     if (writeAsync) {
       try {
-        writeAsync();
-        if (isSuccess) cleantxns();
+        writeAsync()
+        if (isSuccess) cleantxns()
       } catch (e: any) {
-        const message = getParsedError(e);
-        notification.error(message);
-        setConfirmtnxs(false);
+        const message = getParsedError(e)
+        notification.error(message)
+        setConfirmtnxs(false)
       }
     }
-  };
+  }
 
   const pasteFromClipboard = async () => {
-    const text = await navigator.clipboard.readText();
+    const text = await navigator.clipboard.readText()
 
-    setAlltxns(text);
-    contentValidation({ contentfull: text });
-  };
+    setAlltxns(text)
+    contentValidation({ contentfull: text })
+  }
 
   return (
     <>
@@ -101,23 +101,18 @@ export default function Home() {
       <div className="flex flex-col items-center flex-grow w-full xl:w-[626px] pt-10 self-center">
         <div className="w-full p-5 md:border-t md:border-r border-t-secondary-content rounded-t-3xl">
           <div className="flex flex-col space-y-3 py-7 rounded-3xl">
-            <button
-              className="text-xs text-right underline text-accent underline-offset-2 hover:text-neutral-content"
-              onClick={pasteFromClipboard}
-            >
-              Paste from Clipboard
-            </button>
+            <ButtonLink onclick={pasteFromClipboard} label="Paste from Clipboard" />
+
             <textarea
               value={alltxns}
               onChange={updateValue}
               placeholder="0x6a22F6308a9a8D40eb7585F16BBd73913cF98633 100000000000000"
               className="w-full rounded-lg textarea textarea-bordered textarea-primary textarea-sm min-h-[135px]"
             ></textarea>
-            <button className="text-xs text-right underline text-accent underline-offset-2" onClick={cleantxns}>
-              clear
-            </button>
+            <ButtonLink onclick={cleantxns} label="clear" />
           </div>
         </div>
+
         {confirmtnxs ? (
           <div className="flex flex-col pb-10">
             <p>Confirm your transactions</p>
@@ -130,7 +125,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(everyTxns).map(({ "0": address, "1": amount }, index) => (
+                {Object.entries(everyTxns).map(({ '0': address, '1': amount }, index) => (
                   <tr key={`${address}-row`}>
                     <th>{index + 1}</th>
                     <td>{address}</td>
@@ -147,30 +142,5 @@ export default function Home() {
         ) : null}
       </div>
     </>
-  );
-}
-
-function Button({
-  onclick,
-  label = "button",
-  className,
-  disabled,
-}: {
-  label?: string;
-  onclick: () => void;
-  className?: string;
-  disabled?: boolean;
-}) {
-  return (
-    <button
-      onClick={onclick}
-      className={clsx(
-        "btn bg-neutral-content rounded-md text-neutral hover:bg-neutral-content disabled:bg-neutral-content/50 disabled:text-neutral",
-        className,
-      )}
-      disabled={disabled}
-    >
-      {label}
-    </button>
-  );
+  )
 }

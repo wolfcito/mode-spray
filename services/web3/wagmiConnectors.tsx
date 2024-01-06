@@ -1,4 +1,4 @@
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import {
   braveWallet,
   coinbaseWallet,
@@ -7,22 +7,22 @@ import {
   rainbowWallet,
   safeWallet,
   walletConnectWallet,
-} from "@rainbow-me/rainbowkit/wallets";
-import * as chains from "viem/chains";
-import { configureChains } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
-import scaffoldConfig from "~~/scaffold.config";
-import { burnerWalletConfig } from "~~/services/web3/wagmi-burner/burnerWalletConfig";
-import { getTargetNetworks } from "~~/utils/scaffold-eth";
+} from '@rainbow-me/rainbowkit/wallets'
+import * as chains from 'viem/chains'
+import { configureChains } from 'wagmi'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { publicProvider } from 'wagmi/providers/public'
+import scaffoldConfig from '~~/scaffold.config'
+import { burnerWalletConfig } from '~~/services/web3/wagmi-burner/burnerWalletConfig'
+import { getTargetNetworks } from '~~/utils/scaffold-eth'
 
-const targetNetworks = getTargetNetworks();
-const { onlyLocalBurnerWallet } = scaffoldConfig;
+const targetNetworks = getTargetNetworks()
+const { onlyLocalBurnerWallet } = scaffoldConfig
 
 // We always want to have mainnet enabled (ENS resolution, ETH price, etc). But only once.
 const enabledChains = targetNetworks.find(network => network.id === 1)
   ? targetNetworks
-  : [...targetNetworks, chains.mainnet];
+  : [...targetNetworks, chains.mainnet]
 
 /**
  * Chains for the app
@@ -45,15 +45,15 @@ export const appChains = configureChains(
         }
       : {}),
   },
-);
+)
 
-const walletsOptions = { chains: appChains.chains, projectId: scaffoldConfig.walletConnectProjectId };
+const walletsOptions = { chains: appChains.chains, projectId: scaffoldConfig.walletConnectProjectId }
 const wallets = [
   metaMaskWallet({ ...walletsOptions, shimDisconnect: true }),
   walletConnectWallet(walletsOptions),
   ledgerWallet(walletsOptions),
   braveWallet(walletsOptions),
-  coinbaseWallet({ ...walletsOptions, appName: "scaffold-eth-2" }),
+  coinbaseWallet({ ...walletsOptions, appName: 'scaffold-eth-2' }),
   rainbowWallet(walletsOptions),
   ...(!targetNetworks.some(network => network.id !== chains.hardhat.id) || !onlyLocalBurnerWallet
     ? [
@@ -63,14 +63,14 @@ const wallets = [
       ]
     : []),
   safeWallet({ ...walletsOptions }),
-];
+]
 
 /**
  * wagmi connectors for the wagmi context
  */
 export const wagmiConnectors = connectorsForWallets([
   {
-    groupName: "Supported Wallets",
+    groupName: 'Supported Wallets',
     wallets,
   },
-]);
+])

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { Address, Log } from "viem";
-import { usePublicClient } from "wagmi";
+import { useEffect, useState } from 'react'
+import { Address, Log } from 'viem'
+import { usePublicClient } from 'wagmi'
 
 export const useContractLogs = (address: Address) => {
-  const [logs, setLogs] = useState<Log[]>([]);
-  const client = usePublicClient();
+  const [logs, setLogs] = useState<Log[]>([])
+  const client = usePublicClient()
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -12,26 +12,26 @@ export const useContractLogs = (address: Address) => {
         const existingLogs = await client.getLogs({
           address: address,
           fromBlock: 0n,
-          toBlock: "latest",
-        });
-        setLogs(existingLogs);
+          toBlock: 'latest',
+        })
+        setLogs(existingLogs)
       } catch (error) {
-        console.error("Failed to fetch logs:", error);
+        console.error('Failed to fetch logs:', error)
       }
-    };
-    fetchLogs();
+    }
+    fetchLogs()
 
     return client.watchBlockNumber({
       onBlockNumber: async (blockNumber, prevBlockNumber) => {
         const newLogs = await client.getLogs({
           address: address,
           fromBlock: prevBlockNumber,
-          toBlock: "latest",
-        });
-        setLogs(prevLogs => [...prevLogs, ...newLogs]);
+          toBlock: 'latest',
+        })
+        setLogs(prevLogs => [...prevLogs, ...newLogs])
       },
-    });
-  }, [address, client]);
+    })
+  }, [address, client])
 
-  return logs;
-};
+  return logs
+}

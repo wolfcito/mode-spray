@@ -1,38 +1,38 @@
-import { useEffect, useState } from "react";
-import { Address as AddressType, createWalletClient, http, parseEther } from "viem";
-import { hardhat } from "viem/chains";
-import { useNetwork } from "wagmi";
-import { BanknotesIcon } from "@heroicons/react/24/outline";
-import { Address, AddressInput, Balance, EtherInput, getParsedError } from "~~/components/scaffold-eth";
-import { useTransactor } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
+import { useEffect, useState } from 'react'
+import { Address as AddressType, createWalletClient, http, parseEther } from 'viem'
+import { hardhat } from 'viem/chains'
+import { useNetwork } from 'wagmi'
+import { BanknotesIcon } from '@heroicons/react/24/outline'
+import { Address, AddressInput, Balance, EtherInput, getParsedError } from '~~/components/scaffold-eth'
+import { useTransactor } from '~~/hooks/scaffold-eth'
+import { notification } from '~~/utils/scaffold-eth'
 
 // Account index to use from generated hardhat accounts.
-const FAUCET_ACCOUNT_INDEX = 0;
+const FAUCET_ACCOUNT_INDEX = 0
 
 const localWalletClient = createWalletClient({
   chain: hardhat,
   transport: http(),
-});
+})
 
 /**
  * Faucet modal which lets you send ETH to any address.
  */
 export const Faucet = () => {
-  const [loading, setLoading] = useState(false);
-  const [inputAddress, setInputAddress] = useState<AddressType>();
-  const [faucetAddress, setFaucetAddress] = useState<AddressType>();
-  const [sendValue, setSendValue] = useState("");
+  const [loading, setLoading] = useState(false)
+  const [inputAddress, setInputAddress] = useState<AddressType>()
+  const [faucetAddress, setFaucetAddress] = useState<AddressType>()
+  const [sendValue, setSendValue] = useState('')
 
-  const { chain: ConnectedChain } = useNetwork();
+  const { chain: ConnectedChain } = useNetwork()
 
-  const faucetTxn = useTransactor(localWalletClient);
+  const faucetTxn = useTransactor(localWalletClient)
 
   useEffect(() => {
     const getFaucetAddress = async () => {
       try {
-        const accounts = await localWalletClient.getAddresses();
-        setFaucetAddress(accounts[FAUCET_ACCOUNT_INDEX]);
+        const accounts = await localWalletClient.getAddresses()
+        setFaucetAddress(accounts[FAUCET_ACCOUNT_INDEX])
       } catch (error) {
         notification.error(
           <>
@@ -41,43 +41,43 @@ export const Faucet = () => {
               - Did you forget to run <code className="italic bg-base-300 text-base font-bold">yarn chain</code> ?
             </p>
             <p className="mt-1 break-normal">
-              - Or you can change <code className="italic bg-base-300 text-base font-bold">targetNetwork</code> in{" "}
+              - Or you can change <code className="italic bg-base-300 text-base font-bold">targetNetwork</code> in{' '}
               <code className="italic bg-base-300 text-base font-bold">scaffold.config.ts</code>
             </p>
           </>,
-        );
-        console.error("⚡️ ~ file: Faucet.tsx:getFaucetAddress ~ error", error);
+        )
+        console.error('⚡️ ~ file: Faucet.tsx:getFaucetAddress ~ error', error)
       }
-    };
-    getFaucetAddress();
-  }, []);
+    }
+    getFaucetAddress()
+  }, [])
 
   const sendETH = async () => {
     if (!faucetAddress) {
-      return;
+      return
     }
     try {
-      setLoading(true);
+      setLoading(true)
       await faucetTxn({
         to: inputAddress,
         value: parseEther(sendValue as `${number}`),
         account: faucetAddress,
         chain: hardhat,
-      });
-      setLoading(false);
-      setInputAddress(undefined);
-      setSendValue("");
+      })
+      setLoading(false)
+      setInputAddress(undefined)
+      setSendValue('')
     } catch (error) {
-      const parsedError = getParsedError(error);
-      console.error("⚡️ ~ file: Faucet.tsx:sendETH ~ error", error);
-      notification.error(parsedError);
-      setLoading(false);
+      const parsedError = getParsedError(error)
+      console.error('⚡️ ~ file: Faucet.tsx:sendETH ~ error', error)
+      notification.error(parsedError)
+      setLoading(false)
     }
-  };
+  }
 
   // Render only on local chain
   if (ConnectedChain?.id !== hardhat.id) {
-    return null;
+    return null
   }
 
   return (
@@ -109,7 +109,7 @@ export const Faucet = () => {
             <div className="flex flex-col space-y-3">
               <AddressInput
                 placeholder="Destination Address"
-                value={inputAddress ?? ""}
+                value={inputAddress ?? ''}
                 onChange={value => setInputAddress(value as AddressType)}
               />
               <EtherInput placeholder="Amount to send" value={sendValue} onChange={value => setSendValue(value)} />
@@ -126,5 +126,5 @@ export const Faucet = () => {
         </label>
       </label>
     </div>
-  );
-};
+  )
+}

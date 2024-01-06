@@ -1,19 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
-import { useTargetNetwork } from "./useTargetNetwork";
-import { Abi, AbiEvent, ExtractAbiEventNames } from "abitype";
-import { useInterval } from "usehooks-ts";
-import { Hash } from "viem";
-import * as chains from "viem/chains";
-import { usePublicClient } from "wagmi";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
-import scaffoldConfig from "~~/scaffold.config";
-import { replacer } from "~~/utils/scaffold-eth/common";
+import { useEffect, useMemo, useState } from 'react'
+import { useTargetNetwork } from './useTargetNetwork'
+import { Abi, AbiEvent, ExtractAbiEventNames } from 'abitype'
+import { useInterval } from 'usehooks-ts'
+import { Hash } from 'viem'
+import * as chains from 'viem/chains'
+import { usePublicClient } from 'wagmi'
+import { useDeployedContractInfo } from '~~/hooks/scaffold-eth'
+import scaffoldConfig from '~~/scaffold.config'
+import { replacer } from '~~/utils/scaffold-eth/common'
 import {
   ContractAbi,
   ContractName,
   UseScaffoldEventHistoryConfig,
   UseScaffoldEventHistoryData,
-} from "~~/utils/scaffold-eth/contract";
+} from '~~/utils/scaffold-eth/contract'
 
 /**
  * Reads events from a deployed contract
@@ -45,31 +45,31 @@ export const useScaffoldEventHistory = <
   watch,
   enabled = true,
 }: UseScaffoldEventHistoryConfig<TContractName, TEventName, TBlockData, TTransactionData, TReceiptData>) => {
-  const [events, setEvents] = useState<any[]>();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>();
-  const [fromBlockUpdated, setFromBlockUpdated] = useState<bigint>(fromBlock);
+  const [events, setEvents] = useState<any[]>()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string>()
+  const [fromBlockUpdated, setFromBlockUpdated] = useState<bigint>(fromBlock)
 
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName);
-  const publicClient = usePublicClient();
-  const { targetNetwork } = useTargetNetwork();
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName)
+  const publicClient = usePublicClient()
+  const { targetNetwork } = useTargetNetwork()
 
   const readEvents = async (fromBlock?: bigint) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       if (!deployedContractData) {
-        throw new Error("Contract not found");
+        throw new Error('Contract not found')
       }
 
       if (!enabled) {
-        throw new Error("Hook disabled");
+        throw new Error('Hook disabled')
       }
 
       const event = (deployedContractData.abi as Abi).find(
-        part => part.type === "event" && part.name === eventName,
-      ) as AbiEvent;
+        part => part.type === 'event' && part.name === eventName,
+      ) as AbiEvent
 
-      const blockNumber = await publicClient.getBlockNumber({ cacheTime: 0 });
+      const blockNumber = await publicClient.getBlockNumber({ cacheTime: 0 })
 
       if ((fromBlock && blockNumber >= fromBlock) || blockNumber >= fromBlockUpdated) {
         const logs = await publicClient.getLogs({
@@ -78,10 +78,10 @@ export const useScaffoldEventHistory = <
           args: filters as any, // TODO: check if it works and fix type
           fromBlock: fromBlock || fromBlockUpdated,
           toBlock: blockNumber,
-        });
-        setFromBlockUpdated(blockNumber + 1n);
+        })
+        setFromBlockUpdated(blockNumber + 1n)
 
-        const newEvents = [];
+        const newEvents = []
         for (let i = logs.length - 1; i >= 0; i--) {
           newEvents.push({
             log: logs[i],
@@ -98,32 +98,32 @@ export const useScaffoldEventHistory = <
               receiptData && logs[i].transactionHash !== null
                 ? await publicClient.getTransactionReceipt({ hash: logs[i].transactionHash as Hash })
                 : null,
-          });
+          })
         }
-        if (events && typeof fromBlock === "undefined") {
-          setEvents([...newEvents, ...events]);
+        if (events && typeof fromBlock === 'undefined') {
+          setEvents([...newEvents, ...events])
         } else {
-          setEvents(newEvents);
+          setEvents(newEvents)
         }
-        setError(undefined);
+        setError(undefined)
       }
     } catch (e: any) {
-      console.error(e);
-      setEvents(undefined);
-      setError(e);
+      console.error(e)
+      setEvents(undefined)
+      setError(e)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    readEvents(fromBlock);
+    readEvents(fromBlock)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromBlock, enabled]);
+  }, [fromBlock, enabled])
 
   useEffect(() => {
     if (!deployedContractLoading) {
-      readEvents();
+      readEvents()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -138,23 +138,23 @@ export const useScaffoldEventHistory = <
     blockData,
     transactionData,
     receiptData,
-  ]);
+  ])
 
   useEffect(() => {
     // Reset the internal state when target network or fromBlock changed
-    setEvents([]);
-    setFromBlockUpdated(fromBlock);
-    setError(undefined);
-  }, [fromBlock, targetNetwork.id]);
+    setEvents([])
+    setFromBlockUpdated(fromBlock)
+    setError(undefined)
+  }, [fromBlock, targetNetwork.id])
 
   useInterval(
     async () => {
       if (!deployedContractLoading) {
-        readEvents();
+        readEvents()
       }
     },
     watch ? (targetNetwork.id !== chains.hardhat.id ? scaffoldConfig.pollingInterval : 4_000) : null,
-  );
+  )
 
   const eventHistoryData = useMemo(
     () =>
@@ -166,19 +166,19 @@ export const useScaffoldEventHistory = <
         TReceiptData
       >,
     [events],
-  );
+  )
 
   return {
     data: eventHistoryData,
     isLoading: isLoading,
     error: error,
-  };
-};
+  }
+}
 
 export const addIndexedArgsToEvent = (event: any) => {
   if (event.args && !Array.isArray(event.args)) {
-    return { ...event, args: { ...event.args, ...Object.values(event.args) } };
+    return { ...event, args: { ...event.args, ...Object.values(event.args) } }
   }
 
-  return event;
-};
+  return event
+}

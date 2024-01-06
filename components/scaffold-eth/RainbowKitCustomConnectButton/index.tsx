@@ -1,28 +1,28 @@
-import { Balance } from "../Balance";
-import { AddressInfoDropdown } from "./AddressInfoDropdown";
-import { AddressQRCodeModal } from "./AddressQRCodeModal";
-import { WrongNetworkDropdown } from "./WrongNetworkDropdown";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Address } from "viem";
-import { useAutoConnect, useNetworkColor } from "~~/hooks/scaffold-eth";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
+import { Balance } from '../Balance'
+import { AddressInfoDropdown } from './AddressInfoDropdown'
+import { AddressQRCodeModal } from './AddressQRCodeModal'
+import { WrongNetworkDropdown } from './WrongNetworkDropdown'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { Address } from 'viem'
+import { useAutoConnect, useNetworkColor } from '~~/hooks/scaffold-eth'
+import { useTargetNetwork } from '~~/hooks/scaffold-eth/useTargetNetwork'
+import { getBlockExplorerAddressLink } from '~~/utils/scaffold-eth'
 
 /**
  * Custom Wagmi Connect Button (watch balance + custom design)
  */
 export const RainbowKitCustomConnectButton = () => {
-  useAutoConnect();
-  const networkColor = useNetworkColor();
-  const { targetNetwork } = useTargetNetwork();
+  useAutoConnect()
+  const networkColor = useNetworkColor()
+  const { targetNetwork } = useTargetNetwork()
 
   return (
     <ConnectButton.Custom>
       {({ account, chain, openConnectModal, mounted }) => {
-        const connected = mounted && account && chain;
+        const connected = mounted && account && chain
         const blockExplorerAddressLink = account
           ? getBlockExplorerAddressLink(targetNetwork, account.address)
-          : undefined;
+          : undefined
 
         return (
           <>
@@ -32,11 +32,11 @@ export const RainbowKitCustomConnectButton = () => {
                   <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
                     Connect Wallet
                   </button>
-                );
+                )
               }
 
               if (chain.unsupported || chain.id !== targetNetwork.id) {
-                return <WrongNetworkDropdown />;
+                return <WrongNetworkDropdown />
               }
 
               return (
@@ -55,11 +55,11 @@ export const RainbowKitCustomConnectButton = () => {
                   />
                   <AddressQRCodeModal address={account.address as Address} modalId="qrcode-modal" />
                 </>
-              );
+              )
             })()}
           </>
-        );
+        )
       }}
     </ConnectButton.Custom>
-  );
-};
+  )
+}

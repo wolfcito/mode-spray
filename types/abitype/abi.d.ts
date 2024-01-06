@@ -1,15 +1,15 @@
-import "abitype";
+import 'abitype'
 
-type AddressType = string;
+type AddressType = string
 
-declare module "viem/node_modules/abitype" {
+declare module 'viem/node_modules/abitype' {
   export interface Config {
-    AddressType: AddressType;
+    AddressType: AddressType
   }
 }
 
-declare module "abitype" {
+declare module 'abitype' {
   export interface Config {
-    AddressType: AddressType;
+    AddressType: AddressType
   }
 }

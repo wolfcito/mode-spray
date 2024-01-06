@@ -1,5 +1,5 @@
-import { AvatarComponent } from "@rainbow-me/rainbowkit";
-import { blo } from "blo";
+import { AvatarComponent } from '@rainbow-me/rainbowkit'
+import { blo } from 'blo'
 
 // Custom Avatar for RainbowKit
 export const BlockieAvatar: AvatarComponent = ({ address, ensImage, size }) => (
@@ -12,4 +12,4 @@ export const BlockieAvatar: AvatarComponent = ({ address, ensImage, size }) => (
     height={size}
     alt={`${address} avatar`}
   />
-);
+)
