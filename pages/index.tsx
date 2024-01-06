@@ -44,21 +44,30 @@ export default function Home() {
   };
 
   const contentValidation = ({ contentfull }: { contentfull: string }) => {
+    setAllValues([]);
+    setConfirmtnxs(false);
+
     try {
       const rows = contentfull.split("\n");
-
+      const allTxns: MyDictionaryProps = {};
       rows.forEach(element => {
         const onerow = element.split(/[,\s;]+/);
         if (onerow[0].startsWith("0x") && onerow[0].length === 42) {
-          everyTxns[onerow[0]] = BigInt(onerow[1]);
+          allTxns[onerow[0]] = BigInt(onerow[1]);
           allAddress.push(onerow[0]);
           allValues.push(BigInt(onerow[1]));
         }
       });
 
-      setAlltxns(contentfull);
-      setConfirmtnxs(true);
+      const allowContinue = Object.keys(allTxns).length > 0;
+      if (!allowContinue) {
+        notification.warning("Please check the wallet and amount");
+        return;
+      }
 
+      setConfirmtnxs(allowContinue);
+      setEveryTxns(allTxns);
+      setAlltxns(contentfull);
       setTotalcost(allValues.reduce((a, b) => a + b, BigInt(0)));
     } catch (e) {
       console.error("Invalid format");
@@ -114,7 +123,6 @@ export default function Home() {
           <div className="flex flex-col pb-10">
             <p>Confirm your transactions</p>
             <table className="table table-zebra">
-              {/* head */}
               <thead>
                 <tr>
                   <th>txn</th>
