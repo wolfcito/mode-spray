@@ -34,7 +34,6 @@ export default function Home() {
     setEveryTxns({});
     setAlltxns("");
     setConfirmtnxs(false);
-    console.log(totalcost, allValues, allAddress, everyTxns, alltxns, confirmtnxs);
   };
 
   const updateValue = (e: { target: { value: SetStateAction<string> } }) => {
