@@ -1,4 +1,5 @@
 import { SetStateAction, useState } from 'react'
+import { ethers } from 'ethers'
 import { Button, ButtonLink } from '~~/components/button'
 import { MetaHeader } from '~~/components/header'
 import { getParsedError } from '~~/components/scaffold-eth'
@@ -27,7 +28,7 @@ export default function Home() {
 
   const cleantxns = () => {
     setTotalcost(BigInt('0'))
-    setAllAddress([])
+
     setAllAddress([])
     setAllValues([])
 
@@ -43,6 +44,7 @@ export default function Home() {
   }
 
   const contentValidation = ({ contentfull }: { contentfull: string }) => {
+    setAllAddress([])
     setAllValues([])
     setConfirmtnxs(false)
 
@@ -52,22 +54,27 @@ export default function Home() {
       rows.forEach(element => {
         const onerow = element.split(/[,\s;]+/)
         if (onerow[0].startsWith('0x') && onerow[0].length === 42) {
-          allTxns[onerow[0]] = BigInt(onerow[1])
-          allAddress.push(onerow[0])
-          allValues.push(BigInt(onerow[1]))
+          const weiValue = ethers.parseEther(onerow[1])
+          allTxns[onerow[0]] = weiValue //BigInt(onerow[1])
         }
       })
 
       const allowContinue = Object.keys(allTxns).length > 0
+
       if (!allowContinue) {
         notification.warning('Please check the wallet and amount')
         return
       }
 
+      for (const [addres, amount] of Object.entries(allTxns)) {
+        allAddress.push(addres)
+        allValues.push(amount)
+      }
+
       setConfirmtnxs(allowContinue)
       setEveryTxns(allTxns)
       setAlltxns(contentfull)
-      setTotalcost(allValues.reduce((a, b) => a + b, BigInt(0)))
+      setTotalcost(Object.values(allTxns).reduce((a, b) => a + b, BigInt(0)))
     } catch (e) {
       console.error('Invalid format')
       setConfirmtnxs(false)
@@ -99,7 +106,7 @@ export default function Home() {
       <MetaHeader />
 
       <div className="flex flex-col items-center flex-grow w-full xl:w-[626px] pt-10 self-center">
-        <div className="w-full p-5 md:border-t md:border-r border-t-secondary-content rounded-t-3xl">
+        <div className="w-full p-5 md:border-t md:border-r border-t-secondary-content rounded-t-3xl bg-neutral">
           <div className="flex flex-col space-y-3 py-7 rounded-3xl">
             <ButtonLink onclick={pasteFromClipboard} label="Paste from Clipboard" />
 
@@ -114,7 +121,7 @@ export default function Home() {
         </div>
 
         {confirmtnxs ? (
-          <div className="flex flex-col pb-10">
+          <div className="flex flex-col w-full px-5 pb-10 bg-neutral">
             <p>Confirm your transactions</p>
             <table className="table table-zebra">
               <thead>
@@ -129,13 +136,13 @@ export default function Home() {
                   <tr key={`${address}-row`}>
                     <th>{index + 1}</th>
                     <td>{address}</td>
-                    <td className="text-right">{amount.toString()}</td>
+                    <td className="text-right">{`${ethers.formatEther(amount)} ETH`}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div className="pt-2 pb-3 pr-4 text-sm font-semibold text-right border-t border-secondary text-neutral-content">
-              {`Total amount: (wei) ${totalcost}`}
+              {`Total amount: ${ethers.formatEther(totalcost)} ETH`}
             </div>
             <Button onclick={sprayEth} label="Spray" className="self-center my-5 w-36" disabled={isLoading} />
           </div>
