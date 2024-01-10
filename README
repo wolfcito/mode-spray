@@ -2,7 +2,7 @@
 
 This application simplifies the process of sending ETH amounts to ETH addresses on the Mode Network with ease and efficiency. The user-friendly interface allows users to input recipient ETH addresses, the amount of ETH to send, and the gas to be paid.
 
-!["mode spray app image"](./mode-spray.jpg)
+<img src="./spray.jpg" alt="spray app image" >
 
 ## Features
 
