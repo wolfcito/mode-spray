@@ -40,11 +40,11 @@ export function Header() {
           )}
         </div>
         <Link href="/" passHref className="items-center hidden gap-2 ml-4 mr-6 lg:flex shrink-0">
-          <div className="relative flex w-20 h-10">
+          <div className="relative flex w-10 h-5 -rotate-90">
             <Image alt="logo" className="cursor-pointer" fill src="/logo.svg" />
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-bold leading-tight">SPRAY</span>
+            <span className="text-4xl font-bold leading-tight">SPRAY</span>
           </div>
         </Link>
       </div>
