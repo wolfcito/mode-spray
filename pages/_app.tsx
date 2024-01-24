@@ -6,6 +6,7 @@ import NextNProgress from 'nextjs-progressbar'
 import { Toaster } from 'react-hot-toast'
 import { useDarkMode } from 'usehooks-ts'
 import { WagmiConfig } from 'wagmi'
+import { Footer } from '~~/components/footer'
 import { Header } from '~~/components/header'
 import { BlockieAvatar } from '~~/components/scaffold-eth'
 import { useNativeCurrencyPrice } from '~~/hooks/scaffold-eth'
@@ -33,6 +34,7 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
         </main>
       </div>
       <Toaster />
+      <Footer />
     </>
   )
 }

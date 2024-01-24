@@ -4,10 +4,7 @@ import clsx from 'clsx'
 export function ButtonLink({ onclick, label = 'button', className }: ButtonProps) {
   return (
     <button
-      className={clsx(
-        'text-xs text-right underline text-accent underline-offset-2 hover:text-neutral-content',
-        className,
-      )}
+      className={clsx('text-xs text-right underline text-accent underline-offset-2', className)}
       onClick={onclick}
     >
       {label}

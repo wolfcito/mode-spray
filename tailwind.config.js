@@ -75,6 +75,12 @@ module.exports = {
   },
   theme: {
     extend: {
+      fontFamily: {
+        'ibm-mono': ['IBM Plex Mono', 'monospace'],
+        'ibm-sans': ['IBM Plex Sans', 'sans-serif'],
+        'chakra': ['Chakra Petch', 'sans-serif'],
+        VT323: ['VT323', 'monospace'],
+      },
       boxShadow: {
         center: '0 0 12px -2px rgb(0 0 0 / 0.05)',
       },
