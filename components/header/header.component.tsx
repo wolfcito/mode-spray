@@ -1,5 +1,4 @@
 import React, { useCallback, useRef, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { HeaderMenuLinks } from './header-menu-links.component'
 import { Bars3Icon } from '@heroicons/react/24/outline'
@@ -40,11 +39,12 @@ export function Header() {
           )}
         </div>
         <Link href="/" passHref className="items-center hidden gap-2 ml-4 mr-6 lg:flex shrink-0">
-          <div className="relative flex w-10 h-5 -rotate-90">
-            <Image alt="logo" className="cursor-pointer" fill src="/logo.svg" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-4xl font-bold leading-tight">SPRAY</span>
+          <div className="flex items-center group">
+            <span className="text-4xl font-bold leading-tight font-chakra">SPRAY</span>
+            <div className="flex items-center group-hover:opacity-100 opacity-0 transition duration-500 ease-in-out">
+              <div aria-label="divider" className="h-px w-6 mx-2 bg-neutral-700"></div>
+              <span className="font-mono text-neutral-700">spray ether or tokens to multiple addresses</span>
+            </div>
           </div>
         </Link>
       </div>

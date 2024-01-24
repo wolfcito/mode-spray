@@ -5,6 +5,7 @@ import { useWalletClient } from 'wagmi'
 import { Button, ButtonLink } from '~~/components/button'
 import { MetaHeader } from '~~/components/header'
 import { getParsedError } from '~~/components/scaffold-eth'
+import { Tooltip } from '~~/components/tooltip'
 import { TnxLink } from '~~/components/txn-link'
 import { useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { getBlockExplorerTxLink, notification } from '~~/utils/scaffold-eth'
@@ -128,56 +129,85 @@ export default function Home() {
   return (
     <>
       <MetaHeader />
-
-      <div className="flex flex-col items-center flex-grow w-full xl:w-[626px] self-center">
+      <div className="flex flex-col items-center w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-10 px-8  py-10">
         <div className="w-full p-2 rounded-t-3xl bg-black/20 backdrop-blur-sm">
-          <div className="flex flex-col space-y-3 pb-7 rounded-3xl">
-            <ButtonLink onclick={pasteFromClipboard} label="Paste from Clipboard" className="text-neutral-content" />
+          <div className="flex flex-col space-y-3 pb-2 rounded-3xl">
+            <div className="flex justify-between items-end">
+              <div>
+                <h2 className="font-chakra text-2xl font-semibold m-0 p-0">
+                  Account Panel <Tooltip toolTipText="This is some extra useful information" />
+                </h2>
+                <p className="font-mono text-xs font-normal m-0 text-[#4c4c4c]">
+                  one address and amount[ETH] on each line
+                </p>
+              </div>
+              <ButtonLink
+                onclick={pasteFromClipboard}
+                label="Paste from Clipboard"
+                className="text-xs text-[#4c4c4c]"
+              />
+            </div>
 
             <textarea
               value={alltxns}
               onChange={updateValue}
               placeholder="0x6a22F6308a9a8D40eb7585F16BBd73913cF98633 0.001"
-              className="w-full rounded-lg textarea textarea-bordered textarea-primary textarea-xs min-h-[135px] font-mono"
+              className="w-full rounded-lg text-sm textarea textarea-bordered textarea-primary textarea-xs min-h-[135px] font-mono"
             ></textarea>
-            <ButtonLink onclick={cleantxns} label="clear" />
+            <ButtonLink
+              onclick={cleantxns}
+              label="clear"
+              className={clsx(!alltxns && 'opacity-50 disabled', alltxns && 'hover:text-neutral-content')}
+            />
           </div>
         </div>
 
         <TnxLink infotxns={infotxns} blockhash={blockhash} />
-
-        {confirmtnxs ? (
-          <div className="flex flex-col w-full bg-[url('/mode/mode-hand.png')] bg-right-bottom bg-contain bg-no-repeat">
-            <div className="flex flex-col px-2 pb-10 text-xs bg-black/40 backdrop-blur-sm">
-              <p className="font-bold">Confirm your transactions</p>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-300">
-                  <thead>
-                    <tr>
-                      <th>txn</th>
-                      <th>address</th>
-                      <th className="text-right">amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Object.entries(everyTxns).map(({ '0': address, '1': amount }, index) => (
-                      <tr key={`${address}-row`}>
-                        <td className="p-2">{index + 1}</td>
-                        <td className="font-mono">{address}</td>
-                        <td className="font-mono text-right">{`${ethers.formatEther(amount)} ETH`}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="pt-2 pb-3 pr-4 font-mono text-sm font-semibold text-right border-t border-primary-content text-neutral-content">
-                {`Total amount: ${ethers.formatEther(totalcost)} ETH`}
-              </div>
-              <Button onclick={sprayEth} label="Spray" className={clsx('self-center my-5 w-36')} disabled={isLoading} />
-            </div>
-          </div>
-        ) : null}
       </div>
+      {confirmtnxs ? (
+        <div className="flex flex-col w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-10 px-8  pt-10 bg-right-bottom bg-contain bg-no-repeat">
+          <div className="flex flex-col px-2 pb-10 text-xs bg-black/40 backdrop-blur-sm">
+            <p className="font-chakra text-lg font-semibold">Confirm your Transactions</p>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead className={clsx('border')}>
+                  <tr>
+                    <th scope="col" className="pl-3 pr-4 py-4 border-r text-center">
+                      Txn
+                    </th>
+                    <th scope="col" className="px-6 py-4 border-r">
+                      Address
+                    </th>
+                    <th scope="col" className="px-4 py-4">
+                      Amount
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(everyTxns).map(({ '0': address, '1': amount }, index) => (
+                    <tr key={`${address}-row`} className="border hover:bg-neutral-900 select-none">
+                      <td className="whitespace-nowrap text-center border-r px-3 py-4 font-medium border-neutral-500">
+                        {index + 1}
+                      </td>
+                      <td className="font-mono pl-3 pr-4 py-4 border-r text-center border-neutral-500">{address}</td>
+                      <td className="font-mono pl-3 pr-4 py-4 text-center border-neutral-500">{`${ethers.formatEther(
+                        amount,
+                      )} ETH`}</td>
+                    </tr>
+                  ))}
+                  <tr className="border select-none font-mono text-sm font-semibold text-right border-t border-primary-content bg-[#e0fe000a]">
+                    <td
+                      colSpan={3}
+                      className="pt-2 pb-3 pr-4 text-neutral-content"
+                    >{`Total amount: ${ethers.formatEther(totalcost)} ETH`}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <Button onclick={sprayEth} label="Spray" className={clsx('self-center my-5 w-36')} disabled={isLoading} />
+          </div>
+        </div>
+      ) : null}
     </>
   )
 }
