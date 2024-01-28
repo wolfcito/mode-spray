@@ -129,12 +129,12 @@ export default function Home() {
   return (
     <>
       <MetaHeader />
-      <div className="flex flex-col items-center w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-10 px-8  py-10">
+      <div className="flex flex-col items-center w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-20 md:mt-10 px-4 md:px-8  py-10">
         <div className="w-full p-2 rounded-t-3xl bg-black/20 backdrop-blur-sm">
-          <div className="flex flex-col space-y-3 pb-2 rounded-3xl">
-            <div className="flex justify-between items-end">
+          <div className="flex flex-col pb-2 space-y-3 rounded-3xl">
+            <div className="flex items-end justify-between">
               <div>
-                <h2 className="font-chakra text-2xl font-semibold m-0 p-0">
+                <h2 className="p-0 m-0 text-2xl font-semibold font-chakra">
                   Account Panel <Tooltip toolTipText="This is some extra useful information" />
                 </h2>
                 <p className="font-mono text-xs font-normal m-0 text-[#4c4c4c]">
@@ -165,14 +165,14 @@ export default function Home() {
         <TnxLink infotxns={infotxns} blockhash={blockhash} />
       </div>
       {confirmtnxs ? (
-        <div className="flex flex-col w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-10 px-8  pt-10 bg-right-bottom bg-contain bg-no-repeat">
+        <div className="flex flex-col w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-10 mb-20 px-4 md:px-8 pt-10 bg-right-bottom bg-contain bg-no-repeat">
           <div className="flex flex-col px-2 pb-10 text-xs bg-black/40 backdrop-blur-sm">
-            <p className="font-chakra text-lg font-semibold">Confirm your Transactions</p>
+            <p className="text-lg font-semibold font-chakra">Confirm your Transactions</p>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-300">
                 <thead className={clsx('border')}>
                   <tr>
-                    <th scope="col" className="pl-3 pr-4 py-4 border-r text-center">
+                    <th scope="col" className="py-4 pl-3 pr-4 text-center border-r">
                       Txn
                     </th>
                     <th scope="col" className="px-6 py-4 border-r">
@@ -185,12 +185,12 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {Object.entries(everyTxns).map(({ '0': address, '1': amount }, index) => (
-                    <tr key={`${address}-row`} className="border hover:bg-neutral-900 select-none">
-                      <td className="whitespace-nowrap text-center border-r px-3 py-4 font-medium border-neutral-500">
+                    <tr key={`${address}-row`} className="border select-none hover:bg-neutral-900">
+                      <td className="px-3 py-4 font-medium text-center border-r whitespace-nowrap border-neutral-500">
                         {index + 1}
                       </td>
-                      <td className="font-mono pl-3 pr-4 py-4 border-r text-center border-neutral-500">{address}</td>
-                      <td className="font-mono pl-3 pr-4 py-4 text-center border-neutral-500">{`${ethers.formatEther(
+                      <td className="py-4 pl-3 pr-4 font-mono text-center border-r border-neutral-500">{address}</td>
+                      <td className="py-4 pl-3 pr-4 font-mono text-center border-neutral-500">{`${ethers.formatEther(
                         amount,
                       )} ETH`}</td>
                     </tr>
