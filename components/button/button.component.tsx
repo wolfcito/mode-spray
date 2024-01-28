@@ -13,7 +13,7 @@ export function Button({ onclick, label = 'button', className, disabled }: Butto
     >
       {disabled ? (
         <div>
-          <svg x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40">
+          <svg x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enableBackground="new 0 0 40 40">
             <path
               opacity="0.2"
               fill="#000"
