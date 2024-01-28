@@ -9,7 +9,7 @@ export function TnxLink({ blockhash, infotxns }: TxnLinkProps) {
       <div className="flex flex-col h-auto px-2 pb-10 text-xs bg-black/20 backdrop-blur-sm min-h-32">
         <div className="text-sm text-center">
           <div>Check out details👇👇👇</div>
-          <div className="text-neutral-content">
+          <div className="break-words text-neutral-content">
             <a
               className={`ml-1.5 text-xs font-normal font-mono underline underline-offset-2`}
               target="_blank"
