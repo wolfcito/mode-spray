@@ -167,7 +167,7 @@ export type UseScaffoldReadConfig<
   {
     functionName: TFunctionName
   } & UseScaffoldArgsParam<TContractName, TFunctionName> &
-    Omit<UseContractReadConfig, 'chainId' | 'abi' | 'address' | 'functionName' | 'args'>
+    Omit<UseContractReadConfig, 'chainId' | 'functionName' | 'args'>
 >
 
 export type UseScaffoldWriteConfig<
@@ -182,7 +182,7 @@ export type UseScaffoldWriteConfig<
   {
     functionName: TFunctionName
   } & UseScaffoldArgsParam<TContractName, TFunctionName> &
-    Omit<UseContractWriteConfig, 'chainId' | 'abi' | 'address' | 'functionName' | 'args' | 'mode'>
+    Omit<UseContractWriteConfig, 'chainId' | 'functionName' | 'args' | 'mode'>
 >
 
 export type UseScaffoldEventConfig<
