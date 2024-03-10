@@ -6,7 +6,7 @@ export function Button({ onclick, label = 'button', className, disabled }: Butto
     <button
       onClick={onclick}
       className={clsx(
-        'btn bg-neutral-content rounded-md text-neutral hover:bg-neutral-content disabled:bg-neutral-content/50 disabled:text-neutral',
+        'btn bg-neutral-content rounded-sm text-neutral hover:bg-neutral-content disabled:bg-neutral-content/50 disabled:text-neutral',
         className,
       )}
       disabled={disabled}
