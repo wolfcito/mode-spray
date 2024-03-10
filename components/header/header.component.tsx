@@ -14,7 +14,7 @@ export function Header() {
   )
 
   return (
-    <div className="sticky top-0 z-20 justify-between flex-shrink-0 min-h-0 px-0 lg:static navbar sm:px-2">
+    <div className="sticky top-0 z-20 justify-between flex-shrink-0 min-h-0 px-0 bg-black lg:static navbar sm:px-2">
       <div className="w-auto navbar-start lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
@@ -41,8 +41,8 @@ export function Header() {
         <Link href="/" passHref className="items-center hidden gap-2 ml-4 mr-6 lg:flex shrink-0">
           <div className="flex items-center group">
             <span className="text-4xl font-bold leading-tight font-chakra">SPRAY</span>
-            <div className="flex items-center group-hover:opacity-100 opacity-0 transition duration-500 ease-in-out">
-              <div aria-label="divider" className="h-px w-6 mx-2 bg-neutral-700"></div>
+            <div className="flex items-center transition duration-500 ease-in-out opacity-0 group-hover:opacity-100">
+              <div aria-label="divider" className="w-6 h-px mx-2 bg-neutral-700"></div>
               <span className="font-mono text-neutral-700">spray ether or tokens to multiple addresses</span>
             </div>
           </div>
