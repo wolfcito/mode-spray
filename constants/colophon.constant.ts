@@ -1,4 +1,4 @@
-import colophonProps from '~~/types/colophon'
+import { colophonProps } from '~~/types/colophon'
 
 export const colophon: colophonProps[] = [
   {
