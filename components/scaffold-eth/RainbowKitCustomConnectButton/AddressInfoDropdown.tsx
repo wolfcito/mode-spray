@@ -44,7 +44,7 @@ export const AddressInfoDropdown = ({
 
   return (
     <details ref={dropdownRef} className="leading-3 dropdown dropdown-end">
-      <summary tabIndex={0} className="btn btn-secondary btn-sm p-2 dropdown-toggle gap-0 !h-auto rounded-sm">
+      <summary tabIndex={0} className="btn btn-sm p-2 dropdown-toggle gap-0 !h-auto rounded-sm">
         <BlockieAvatar address={address} size={30} ensImage={ensAvatar} />
         <span className="ml-2 mr-1">{displayName}</span>
         <ChevronDownIcon className="w-4 h-6 ml-2 sm:ml-0" />
