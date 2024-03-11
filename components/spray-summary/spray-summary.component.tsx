@@ -8,7 +8,7 @@ export function SpraySummary({ transactions, isCustom, tokenDecimals, tokenSymbo
   return (
     <>
       <p className="text-lg font-semibold font-chakra">Confirm your Transactions</p>
-      <div className="overflow-x-auto">
+      <div className="mb-5 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-300">
           <thead className={clsx('border')}>
             <tr>

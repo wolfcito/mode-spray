@@ -16,10 +16,9 @@ export default function Home() {
   const { chain } = useNetwork()
 
   useEffect(() => {
-    // logger.log('targetNetwork', targetNetwork)
+    setIsCustom(false)
   }, [targetNetwork.id, chain?.id])
 
-  //  only necessary
   if (chain?.id !== targetNetwork.id) {
     logger.info('You are on the wrong network', chain, targetNetwork)
     return <WrongNetwork />
