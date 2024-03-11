@@ -1,6 +1,6 @@
+import { Icon } from '../icon'
 import { tooltipProps } from './tooltip.type'
 import clsx from 'clsx'
-import { Icon } from '~~/components/icon'
 
 export function Tooltip({ classname, toolTipText }: tooltipProps) {
   return (
