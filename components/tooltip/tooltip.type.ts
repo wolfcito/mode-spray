@@ -1,4 +1,4 @@
 export interface tooltipProps {
-  className?: string
+  classname?: string
   toolTipText?: string
 }
