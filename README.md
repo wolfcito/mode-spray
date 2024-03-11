@@ -10,6 +10,16 @@ This application simplifies the process of sending ETH amounts to ETH addresses 
 
 - Spanish version: https://youtu.be/mzz1P-K1peA
 
+## Example of supported separators
+
+```shell
+0x11F3Ccc1531D4de09d39cF039f9B836bD47FcaA2 0.001
+0xE13344E939e9CE0DD79492A7A352278Bb1f577D2;0.001
+0x98aCac2dc4bb94748e33f092D7D70911b38AB76b,0.001
+0x03aB1D3c6012D68a9799FE91c2f26ab6D5713352=0.001
+0xf6B8cf99E3e4F461d0e7081c506115042Fb72a04&0.001
+```
+
 ## Features
 
 - **Intuitive User Interface:** The app provides an easy-to-use interface for inputting recipient ETH addresses, the amount of ETH to send, and the gas to be paid.
