@@ -19,7 +19,7 @@ export function Header() {
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
             tabIndex={0}
-            className={`ml-1 btn btn-ghost ${isDrawerOpen ? 'hover:bg-secondary' : 'hover:bg-transparent'}`}
+            className={`ml-1 btn btn-ghost rounded-sm ${isDrawerOpen ? 'hover:bg-secondary' : 'hover:bg-transparent'}`}
             onClick={() => {
               setIsDrawerOpen(prevIsOpenState => !prevIsOpenState)
             }}
@@ -29,7 +29,7 @@ export function Header() {
           {isDrawerOpen && (
             <ul
               tabIndex={0}
-              className="p-2 mt-3 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+              className="p-2 mt-3 rounded-sm shadow menu menu-compact dropdown-content bg-base-100 w-52"
               onClick={() => {
                 setIsDrawerOpen(false)
               }}
