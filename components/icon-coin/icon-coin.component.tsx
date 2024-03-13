@@ -7,8 +7,8 @@ export function IconCoin({ icon, symbol, condition }: IconCoinProps) {
     <Image
       src={icon}
       alt={`icon of ${symbol}`}
-      width={30}
-      height={30}
+      width={48}
+      height={48}
       className={clsx('pr-2 grayscale', { 'grayscale-0': condition })}
     />
   )
