@@ -14,7 +14,9 @@ export function WrongNetwork() {
         <div className="w-full p-2 rounded-t-3xl bg-black/20 backdrop-blur-sm">
           <div className="flex flex-col pb-2 space-y-3 rounded-3xl">
             <p className="text-3xl font-semibold font-chakra">Wrong Network</p>
-            <p className="text-lg font-chakra">Please switch to one of our supported networks:</p>
+            <p className="text-lg font-chakra">
+              Please connect your wallet to switch to one of our supported networks:
+            </p>
             {allowedNetworks
               .filter(allowedNetwork => allowedNetwork.id !== chain?.id)
               .map(allowedNetwork => (
