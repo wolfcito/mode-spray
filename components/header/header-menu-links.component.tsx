@@ -7,6 +7,10 @@ const menuLinks: HeaderMenuLink[] = [
     label: 'Home',
     href: '/',
   },
+  {
+    label: 'Mode Airdrop',
+    href: 'https://ref.mode.network/TxPKPD',
+  },
 ]
 
 export function HeaderMenuLinks() {
