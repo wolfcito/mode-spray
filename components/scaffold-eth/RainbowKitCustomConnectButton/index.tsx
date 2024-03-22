@@ -1,11 +1,21 @@
-import { Balance } from '../Balance'
+import { useCallback, useState } from 'react'
 import { AddressInfoDropdown } from './AddressInfoDropdown'
 import { AddressQRCodeModal } from './AddressQRCodeModal'
 import { WrongNetworkDropdown } from './WrongNetworkDropdown'
+import { PushAPI } from '@pushprotocol/restapi'
+import { ENV } from '@pushprotocol/restapi/src/lib/constants'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Address } from 'viem'
+import { useWalletClient } from 'wagmi'
+import { ButtonWrapper } from '~~/components/button-wrapper'
+import { Notifications } from '~~/components/notifications'
+import { Balance } from '~~/components/scaffold-eth/Balance'
 import { useAutoConnect, useNetworkColor } from '~~/hooks/scaffold-eth'
 import { useTargetNetwork } from '~~/hooks/scaffold-eth/useTargetNetwork'
+import { BellIcon } from '~~/icons'
+import { logger } from '~~/lib'
+import { getSigner } from '~~/lib/notifications'
+import { useGlobalState } from '~~/services/store/store'
 import { getBlockExplorerAddressLink } from '~~/utils/scaffold-eth'
 
 /**
@@ -15,6 +25,34 @@ export const RainbowKitCustomConnectButton = () => {
   useAutoConnect()
   const networkColor = useNetworkColor()
   const { targetNetwork } = useTargetNetwork()
+  const [notificationList, setNotificationList] = useState<any>([])
+  const delegate = useGlobalState(({ delegate }) => delegate)
+  const datosClient = useWalletClient()
+
+  const notificationsByType = useCallback(async () => {
+    const signer = getSigner(delegate)
+
+    // TODO: enable prod env: enviroment.debug ? ENV.STAGING : ENV.PROD
+    const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING })
+
+    if (sprayChannel.errors.length > 0) {
+      logger.error(sprayChannel.errors)
+      return []
+    }
+
+    const inbox = await sprayChannel.notification.list('INBOX', {
+      account: `eip155:11155111:${datosClient.data?.account.address}`,
+    })
+
+    const spam = await sprayChannel.notification.list('SPAM', {
+      account: `eip155:11155111:${datosClient.data?.account.address}`,
+    })
+
+    const notifications = [...inbox, ...spam]
+    notifications.sort((a, b) => b.sid - a.sid)
+
+    setNotificationList(notifications)
+  }, [delegate, datosClient])
 
   return (
     <ConnectButton.Custom>
@@ -41,12 +79,27 @@ export const RainbowKitCustomConnectButton = () => {
 
               return (
                 <>
-                  <div className="flex flex-col items-center mr-1">
-                    <Balance address={account.address as Address} className="min-h-0 h-auto" />
-                    <span className="text-xs" style={{ color: networkColor }}>
-                      {chain.name}
-                    </span>
-                  </div>
+                  <ButtonWrapper classname="!py-0 !px-1 !flex">
+                    <input
+                      id="notification-panel"
+                      type="checkbox"
+                      className="drawer-toggle"
+                      onClick={notificationsByType}
+                    />
+                    <label htmlFor="notification-panel">
+                      <BellIcon className="h-12 p-0 px-4 cursor-pointer" />
+                    </label>
+                    <Notifications notificationList={notificationList} />
+                  </ButtonWrapper>
+
+                  <ButtonWrapper classname="!p-2">
+                    <div className="flex flex-col items-center mr-1">
+                      <Balance address={account.address as Address} className="h-auto min-h-0" />
+                      <span className="text-xs" style={{ color: networkColor }}>
+                        {chain.name}
+                      </span>
+                    </div>
+                  </ButtonWrapper>
                   <AddressInfoDropdown
                     address={account.address as Address}
                     displayName={account.displayName}
