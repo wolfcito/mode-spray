@@ -39,6 +39,12 @@ export const officialTokenByChain: OfficialTokensProps[] = [
   },
   {
     chainId: 34443,
+    symbol: 'ezETH',
+    address: '0x2416092f143378750bb29b79ed961ab195cceea5',
+    icon: ezethIcon,
+  },
+  {
+    chainId: 34443,
     symbol: 'WETH',
     address: '0x4200000000000000000000000000000000000006',
     icon: wethIcon,
@@ -84,11 +90,5 @@ export const officialTokenByChain: OfficialTokensProps[] = [
     symbol: 'AAVE',
     address: '0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2',
     icon: aaveIcon,
-  },
-  {
-    chainId: 34443,
-    symbol: 'ezETH',
-    address: '0x2416092f143378750bb29b79ed961ab195cceea5',
-    icon: ezethIcon,
   },
 ]
