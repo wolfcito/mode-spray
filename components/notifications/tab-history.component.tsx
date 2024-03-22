@@ -10,9 +10,7 @@ export function TabHistory({ hash, timestamp }: HistoryTabProps) {
     <li>
       <Link
         className="flex rounded-sm bg-neutral hover:text-neutral-content"
-        href={
-          'https://sepolia.explorer.mode.network/tx/0x26f67ff684f8a06fe589e97f6c50433cafe2ebf6622e31a022e56569cc7079c2'
-        }
+        href={'https://sepolia.explorer.mode.network/tx/<transaction>'}
         target="_blank"
       >
         <BlockieAvatar address={'0x11F3Ccc1531D4de09d39cF039f9B836bD47FcaA2'} size={30} ensImage={null} />
