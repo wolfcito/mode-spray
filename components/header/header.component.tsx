@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import Link from 'next/link'
 import { HeaderMenuLinks } from './header-menu-links.component'
 import { Bars3Icon } from '@heroicons/react/24/outline'
+import { ButtonWrapper } from '~~/components/button-wrapper'
 import { FaucetButton, RainbowKitCustomConnectButton } from '~~/components/scaffold-eth'
 import { useOutsideClick } from '~~/hooks/scaffold-eth'
 
@@ -14,7 +15,7 @@ export function Header() {
   )
 
   return (
-    <div className="sticky top-0 z-20 justify-between flex-shrink-0 min-h-0 px-0 bg-black lg:static navbar sm:px-2">
+    <div className="sticky top-0 z-20 justify-between flex-shrink-0 min-h-0 px-0 bg-black lg:static navbar sm:px-2 drawer-end">
       <div className="w-auto navbar-start lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
@@ -40,15 +41,20 @@ export function Header() {
         </div>
         <Link href="/" passHref className="items-center hidden gap-2 ml-4 mr-6 lg:flex shrink-0">
           <div className="flex items-center group">
-            <span className="text-4xl font-bold leading-tight font-chakra">SPRAY</span>
+            <span className="text-3xl font-bold leading-tight font-chakra">SPRAY</span>
             <div className="flex items-center transition duration-500 ease-in-out opacity-0 group-hover:opacity-100">
               <div aria-label="divider" className="w-6 h-px mx-2 bg-neutral-700"></div>
-              <span className="font-mono text-neutral-700">spray ether or tokens to multiple addresses</span>
+              <span className="font-mono text-sm text-neutral">spray ether or tokens to multiple addresses</span>
             </div>
           </div>
         </Link>
       </div>
       <div className="flex-grow mr-4 navbar-end">
+        <ButtonWrapper>
+          <Link href="https://ref.mode.network/TxPKPD" passHref target="_blank" rel="noreferrer">
+            <span className="leading-tight font-chakra text-neutral-content">AIRDROP</span>
+          </Link>
+        </ButtonWrapper>
         <RainbowKitCustomConnectButton />
         <FaucetButton />
       </div>
