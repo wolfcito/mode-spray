@@ -1,4 +1,5 @@
 import { SprayMenuSelectorProps } from './spray-menu-selector.type'
+import clsx from 'clsx'
 import { nanoid } from 'nanoid'
 import { IconCoin } from '~~/components/icon-coin'
 import { ItemCoin } from '~~/components/item-coin'
@@ -24,9 +25,15 @@ export function SprayMenuSelector({
     <>
       <span className="text-sm">{`Official tokens on ${networkName}:`}</span>
       <ul className="flex gap-2 pb-4 overflow-x-scroll flex-nowrap text-[#888]">
-        <ItemCoin condition={!isCustom} onclick={() => toggleEth(false)}>
-          <IconCoin icon={ethIcon} symbol={'ETH'} condition={!isCustom} />
-          ETH
+        <ItemCoin
+          condition={!isCustom}
+          onclick={() => toggleEth(false)}
+          classname={clsx('grayscale hover:grayscale-0 hover:text-white', {
+            'grayscale-0': !isCustom,
+          })}
+        >
+          <IconCoin icon={ethIcon} symbol={'ETH'} />
+          <div className="font-mono text-sm">ETH</div>
         </ItemCoin>
 
         {filteredTokens.map(token => (
@@ -40,13 +47,12 @@ export function SprayMenuSelector({
               })
               toggleEth(true)
             }}
+            classname={clsx('grayscale hover:grayscale-0 hover:text-white', {
+              'grayscale-0': isCustom && tokenSelected.tokenAddress === token.address,
+            })}
           >
-            <IconCoin
-              icon={token.icon}
-              symbol={token.symbol}
-              condition={isCustom && tokenSelected.tokenAddress === token.address}
-            />
-            {token.symbol}
+            <IconCoin icon={token.icon} symbol={token.symbol} />
+            <div className="font-mono text-sm">{token.symbol}</div>
           </ItemCoin>
         ))}
       </ul>
