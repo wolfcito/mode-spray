@@ -4,6 +4,7 @@ import { useDebounce } from 'usehooks-ts'
 import { Address, isAddress } from 'viem'
 import { useEnsAddress, useEnsAvatar, useEnsName } from 'wagmi'
 import { CommonInputProps, InputBase, isENS } from '~~/components/scaffold-eth'
+import { AddressProp } from '~~/types/mode-spray'
 
 /**
  * Address input with ENS name resolution
@@ -67,7 +68,7 @@ export const AddressInput = ({ value, name, placeholder, onChange, disabled }: C
       disabled={isEnsAddressLoading || isEnsNameLoading || disabled}
       prefix={
         ensName && (
-          <div className="flex bg-base-300 rounded-l-full items-center">
+          <div className="flex items-center rounded-l-full bg-base-300">
             {ensAvatar ? (
               <span className="w-[35px]">
                 {
@@ -76,14 +77,14 @@ export const AddressInput = ({ value, name, placeholder, onChange, disabled }: C
                 }
               </span>
             ) : null}
-            <span className="text-accent px-2">{enteredEnsName ?? ensName}</span>
+            <span className="px-2 text-accent">{enteredEnsName ?? ensName}</span>
           </div>
         )
       }
       suffix={
         // Don't want to use nextJS Image here (and adding remote patterns for the URL)
         // eslint-disable-next-line @next/next/no-img-element
-        value && <img alt="" className="!rounded-full" src={blo(value as `0x${string}`)} width="35" height="35" />
+        value && <img alt="" className="!rounded-full" src={blo(value as AddressProp)} width="35" height="35" />
       }
     />
   )
