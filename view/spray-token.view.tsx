@@ -1,8 +1,12 @@
 import { SetStateAction, useState } from 'react'
+import { PushAPI } from '@pushprotocol/restapi'
+import { ENV } from '@pushprotocol/restapi/src/lib/constants'
 import clsx from 'clsx'
-import { parseUnits } from 'ethers'
+import { format } from 'date-fns'
+import { formatUnits, parseUnits } from 'ethers'
 import { erc20ABI, useWalletClient } from 'wagmi'
 import { Button } from '~~/components/button'
+import { TokenTransfer } from '~~/components/notifications/notifications.type'
 import { getParsedError } from '~~/components/scaffold-eth'
 import { SprayEditor } from '~~/components/spray-editor'
 import { SprayHeader } from '~~/components/spray-header'
@@ -10,8 +14,10 @@ import { SpraySummary } from '~~/components/spray-summary'
 import { TnxLink } from '~~/components/txn-link'
 import { useDeployedContractInfo, useScaffoldContractRead, useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { logger } from '~~/lib'
+import { getSigner } from '~~/lib/notifications'
+import { useGlobalState } from '~~/services/store/store'
 import { AddressProp, SprayTransactionProps, TokenSelectedProps } from '~~/types/mode-spray'
-import { getBlockExplorerTxLink, notification } from '~~/utils/scaffold-eth'
+import { getBlockExplorerTxLink, getTokenAmountByTxn, notification } from '~~/utils/scaffold-eth'
 
 export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProps }) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -28,6 +34,9 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
 
   const { data: dataClient } = useWalletClient()
   const { data: deployedInfo } = useDeployedContractInfo('ModeSpray')
+
+  // const datosClient = useWalletClient()
+  const delegate = useGlobalState(({ delegate }) => delegate)
 
   const cleanValues = () => {
     setTotalcost(BigInt('0'))
@@ -146,6 +155,8 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
         cleanValues()
         setInfotxns(data)
         getBlockexplorerTxnLink(data)
+
+        sendNotifications(data)
       } catch (e: any) {
         const message = getParsedError(e)
         notification.error(message)
@@ -153,6 +164,88 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
         setIsLoading(false)
       }
     }
+  }
+
+  const sendNotifications = async (hashTxn: AddressProp) => {
+    if (!dataClient) return
+    const network = await dataClient.getChainId()
+    console.log('network', network)
+
+    const linkTx = getTokenAmountByTxn(network, hashTxn)
+
+    const signer = getSigner(delegate)
+
+    const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING })
+    logger.log('sprayChannel', sprayChannel)
+
+    const { items } = await fetch(linkTx).then(res => res.json())
+    if (!items || !items.length) {
+      logger.log('No transactions found.')
+      return
+    }
+
+    const forNotifications = (items as TokenTransfer[]).map(token => {
+      return {
+        address: token.to.hash,
+        symbol: token.token.symbol,
+        total: formatUnits(BigInt(token.total.value), Number(token.total.decimals)),
+      }
+    })
+
+    if (!forNotifications) {
+      logger.log('No sender found to notify')
+      return
+    }
+
+    const sender = forNotifications[0]
+    if (!sender) {
+      logger.log('Sender not found')
+      return
+    }
+
+    const cta = 'https://spray.mundovirtual.solutions/'
+    const senderTitle = `💰 Spray successful ${sender.total} ${sender.symbol}!`
+    const senderBody = `[${format(new Date(), 'MMM dd yyyy hh:mm')}]: You have successfully sent  💰 ${sender.total} ${
+      sender.symbol
+    }!`
+
+    sprayChannel.channel.send([sender.address], {
+      notification: {
+        title: senderTitle,
+        body: senderBody,
+      },
+      payload: {
+        cta,
+        title: senderTitle,
+        body: senderBody,
+      },
+    })
+
+    const recipients = forNotifications.slice(1)
+
+    if (!recipients) {
+      console.log('Recipients not found')
+      return
+    }
+
+    recipients.forEach(recipient => {
+      const title = `💰 You just received ${recipient.total} ${recipient.symbol}!`
+      const body = `Check your wallet, you just received 💰 ${recipient.total} ${recipient.symbol}. ${format(
+        new Date(),
+        'dd MMM yyyy hh:mm',
+      )}`
+      sprayChannel.channel.send([recipient.address], {
+        notification: {
+          title,
+          body,
+        },
+        payload: {
+          cta,
+          title,
+          body,
+        },
+      })
+    })
   }
 
   const pasteFromClipboard = async () => {
