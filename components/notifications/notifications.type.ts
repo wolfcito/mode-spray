@@ -62,48 +62,24 @@ interface From {
   hash: string
   implementation_name: any
   is_contract: boolean
-  is_verified: any
+  is_verified: boolean
   name: any
   private_tags: any[]
   public_tags: any[]
   watchlist_names: any[]
 }
 
-interface TokenTransfer {
+export interface TokenTransfer {
   block_hash: string
-  from: From2
+  from: From
   log_index: string
   method: any
   timestamp: any
-  to: To2
+  to: To
   token: Token
   total: Total
   tx_hash: string
   type: string
-}
-
-interface From2 {
-  ens_domain_name: any
-  hash: string
-  implementation_name: any
-  is_contract: boolean
-  is_verified: boolean
-  name: any
-  private_tags: any[]
-  public_tags: any[]
-  watchlist_names: any[]
-}
-
-interface To2 {
-  ens_domain_name: any
-  hash: string
-  implementation_name: any
-  is_contract: boolean
-  is_verified: boolean
-  name: any
-  private_tags: any[]
-  public_tags: any[]
-  watchlist_names: any[]
 }
 
 interface Token {
