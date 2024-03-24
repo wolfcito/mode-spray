@@ -9,3 +9,5 @@ export interface TokenSelectedProps {
   tokenAddress: AddressProp
   tokenSymbol: string
 }
+
+export type sprayStatus = 'loading' | 'success' | 'error' | 'default'
