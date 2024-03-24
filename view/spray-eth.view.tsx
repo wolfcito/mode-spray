@@ -7,10 +7,10 @@ import { getParsedError } from '~~/components/scaffold-eth'
 import { SprayEditor } from '~~/components/spray-editor'
 import { SprayHeader } from '~~/components/spray-header'
 import { SpraySummary } from '~~/components/spray-summary'
-import { TnxLink } from '~~/components/txn-link'
 import { useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { useTargetNetwork } from '~~/hooks/scaffold-eth/useTargetNetwork'
 import { logger } from '~~/lib'
+import { showSuccessModal } from '~~/lib/alerts'
 import { AddressProp, SprayTransactionProps } from '~~/types/mode-spray'
 import { getBlockExplorerTxLink, notification } from '~~/utils/scaffold-eth'
 
@@ -21,7 +21,6 @@ export function SprayETH() {
   const [everyTxns, setEveryTxns] = useState<SprayTransactionProps[]>([])
 
   const [totalcost, setTotalcost] = useState(BigInt('0'))
-  const [infotxns, setInfotxns] = useState<AddressProp | undefined>(undefined)
   const [blockhash, setBlockhash] = useState<string>('')
 
   const { data: dataClient } = useWalletClient()
@@ -36,7 +35,6 @@ export function SprayETH() {
 
   const cleanValues = () => {
     setTotalcost(BigInt('0'))
-    setInfotxns(undefined)
 
     setEveryTxns([])
     setAlltxns('')
@@ -95,8 +93,10 @@ export function SprayETH() {
 
         if (!data) return
         cleanValues()
-        setInfotxns(data)
-        getBlockexplorerTxnLink(data)
+
+        await getBlockexplorerTxnLink(data)
+
+        showSuccessModal({ infotxns: data, blockhash: blockhash })
       } catch (e: any) {
         const message = getParsedError(e)
         notification.error(message)
@@ -131,7 +131,6 @@ export function SprayETH() {
         pasteFromClipboard={pasteFromClipboard}
       />
 
-      <TnxLink infotxns={infotxns} blockhash={blockhash} />
       {confirmtnxs ? (
         <div className="flex flex-col w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-10 mb-20 px-4 md:px-8 pt-10 bg-right-bottom bg-contain bg-no-repeat">
           <div className="flex flex-col px-2 pb-10 text-xs bg-black/40 backdrop-blur-sm">
