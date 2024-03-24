@@ -6,13 +6,12 @@ export function ButtonWrapper({ children, classname }: ButtonWrapperProps) {
     <>
       <div
         className={clsx(
-          'items-center hidden gap-2 px-4 py-3 rounded-sm lg:flex hover:rounded-sm hover:bg-neutral',
+          'items-center hidden gap-2 px-4 py-3 rounded-sm lg:flex hover:rounded-sm hover:bg-neutral cursor-pointer',
           classname,
         )}
       >
         {children}
       </div>
-      <div className="hidden h-full text-black border-l border-neutral lg:flex">.</div>
     </>
   )
 }
