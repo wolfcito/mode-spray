@@ -11,41 +11,38 @@ import { getParsedError } from '~~/components/scaffold-eth'
 import { SprayEditor } from '~~/components/spray-editor'
 import { SprayHeader } from '~~/components/spray-header'
 import { SpraySummary } from '~~/components/spray-summary'
-import { TnxLink } from '~~/components/txn-link'
+import { Steps } from '~~/components/steps'
 import { useDeployedContractInfo, useScaffoldContractRead, useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { logger } from '~~/lib'
+import { showSuccessModal } from '~~/lib/alerts'
 import { getSigner } from '~~/lib/notifications'
 import { useGlobalState } from '~~/services/store/store'
-import { AddressProp, SprayTransactionProps, TokenSelectedProps } from '~~/types/mode-spray'
+import { AddressProp, SprayTransactionProps, TokenSelectedProps, sprayStatus } from '~~/types/mode-spray'
 import { getBlockExplorerTxLink, getTokenAmountByTxn, notification } from '~~/utils/scaffold-eth'
 
 export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProps }) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [readyToSpray, setReadyToSpray] = useState<boolean>(false)
   const [confirmtnxs, setConfirmtnxs] = useState<boolean>(false)
+  const [readyToSpray, setReadyToSpray] = useState<sprayStatus>('default')
+  const [readyToNotify, setNeadyToNotify] = useState<sprayStatus>('default')
 
   const [alltxns, setAlltxns] = useState<string>('')
 
   const [everyTxns, setEveryTxns] = useState<SprayTransactionProps[]>([])
 
   const [totalcost, setTotalcost] = useState(BigInt('0'))
-  const [infotxns, setInfotxns] = useState<AddressProp | undefined>(undefined)
-  const [blockhash, setblockhash] = useState<string>()
 
   const { data: dataClient } = useWalletClient()
   const { data: deployedInfo } = useDeployedContractInfo('ModeSpray')
 
-  // const datosClient = useWalletClient()
   const delegate = useGlobalState(({ delegate }) => delegate)
 
   const cleanValues = () => {
     setTotalcost(BigInt('0'))
-    setInfotxns(undefined)
 
     setEveryTxns([])
     setAlltxns('')
     setConfirmtnxs(false)
-    setblockhash('')
   }
 
   const onChangeValues = (e: { target: { value: SetStateAction<string> } }) => {
@@ -56,7 +53,6 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
 
   const contentValidation = ({ contentfull }: { contentfull: string }) => {
     setConfirmtnxs(false)
-    setblockhash('')
 
     try {
       const rows = contentfull.split('\n')
@@ -85,18 +81,10 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
       setTotalcost(BigInt(allTxns.reduce((accumulator, tnxz) => accumulator + tnxz.value, BigInt(0))))
     } catch (e) {
       notification.warning('Invalid format')
-      logger.error('Invalid format')
+
       setConfirmtnxs(false)
     }
   }
-
-  const { data: allowance } = useScaffoldContractRead({
-    contractName: 'USDC',
-    functionName: 'allowance',
-    abi: erc20ABI,
-    address: tokenSelected.tokenAddress,
-    args: [dataClient?.account.address, deployedInfo?.address],
-  })
 
   const { data: decimalsToken } = useScaffoldContractRead({
     contractName: 'USDC',
@@ -105,11 +93,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     address: tokenSelected.tokenAddress,
   })
 
-  const {
-    writeAsync: approval,
-    isSuccess: isAmountApprovedSuccess,
-    isLoading: isLoadingApproval,
-  } = useScaffoldContractWrite({
+  const { writeAsync: approval, isError: isAmountApprovedError } = useScaffoldContractWrite({
     contractName: 'USDC',
     functionName: 'approve',
     abi: erc20ABI,
@@ -117,11 +101,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     args: [deployedInfo?.address, totalcost * 2n],
   })
 
-  const {
-    writeAsync: sendToken,
-
-    isLoading: isLoadingTokenDisperse,
-  } = useScaffoldContractWrite({
+  const { writeAsync: sendToken, isError: isSendTokenError } = useScaffoldContractWrite({
     contractName: 'ModeSpray',
     functionName: 'disperseToken',
     args: [tokenSelected.tokenAddress, everyTxns.map(item => item.key), everyTxns.map(item => item.value)],
@@ -129,20 +109,20 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
 
   const approveTransaction = async () => {
     setIsLoading(true)
-    if (approval) {
-      try {
-        if (allowance === undefined || allowance <= totalcost || !isAmountApprovedSuccess) {
-          const approvalResult = await approval()
-          logger.log('approvalResult', approvalResult)
-          setReadyToSpray(true)
-        }
-      } catch (e: any) {
-        const message = getParsedError(e)
-        notification.error(message)
-      } finally {
-        setIsLoading(false)
-        setReadyToSpray(false)
+
+    try {
+      const approvalResult = await approval()
+
+      if (!approvalResult) {
+        return 'default' as sprayStatus
       }
+      return 'success' as sprayStatus
+    } catch (e: any) {
+      const message = getParsedError(e)
+      notification.error(message)
+      return 'error' as sprayStatus
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -153,30 +133,54 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
         const data = await sendToken()
         if (!data) return
         cleanValues()
-        setInfotxns(data)
-        getBlockexplorerTxnLink(data)
 
+        const blockhash = await getBlockexplorerTxnLink(data)
+
+        showSuccessModal({ infotxns: data, blockhash: blockhash })
+        setNeadyToNotify('success')
         sendNotifications(data)
+
+        return 'success' as sprayStatus
       } catch (e: any) {
         const message = getParsedError(e)
         notification.error(message)
-      } finally {
         setIsLoading(false)
+        setNeadyToNotify('error')
       }
     }
+  }
+
+  const sprayit = async () => {
+    setIsLoading(true)
+    setReadyToSpray('loading')
+    const statusApproval = await approveTransaction()
+    if (statusApproval !== 'success' || isAmountApprovedError) {
+      setReadyToSpray('default')
+      setIsLoading(false)
+      return
+    }
+    setReadyToSpray('success')
+
+    setNeadyToNotify('loading')
+    if ((await sprayToken()) !== 'success' || isSendTokenError) {
+      setNeadyToNotify('default')
+      setIsLoading(false)
+      return
+    }
+    setNeadyToNotify('default')
+
+    setIsLoading(false)
   }
 
   const sendNotifications = async (hashTxn: AddressProp) => {
     if (!dataClient) return
     const network = await dataClient.getChainId()
-    console.log('network', network)
 
     const linkTx = getTokenAmountByTxn(network, hashTxn)
 
     const signer = getSigner(delegate)
 
     const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING })
-    logger.log('sprayChannel', sprayChannel)
 
     const { items } = await fetch(linkTx).then(res => res.json())
     if (!items || !items.length) {
@@ -224,7 +228,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     const recipients = forNotifications.slice(1)
 
     if (!recipients) {
-      console.log('Recipients not found')
+      logger.log('Recipients not found')
       return
     }
 
@@ -258,8 +262,9 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
   const getBlockexplorerTxnLink = async (address: AddressProp) => {
     if (!dataClient) return
     const network = await dataClient.getChainId()
-    const linkTx = getBlockExplorerTxLink(network, address)
-    setblockhash(linkTx)
+    const blockhash = getBlockExplorerTxLink(network, address)
+
+    return blockhash
   }
 
   if (!decimalsToken) return
@@ -275,7 +280,6 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
         pasteFromClipboard={pasteFromClipboard}
       />
 
-      <TnxLink infotxns={infotxns} blockhash={blockhash} />
       {confirmtnxs ? (
         <div className="flex flex-col w-full xl:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 mt-10 mb-20 px-4 md:px-8 pt-10 bg-right-bottom bg-contain bg-no-repeat">
           <div className="flex flex-col px-2 pb-10 text-xs bg-black/40 backdrop-blur-sm">
@@ -287,21 +291,26 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
               totalCost={totalcost}
             />
 
-            {readyToSpray || allowance ? (
-              <Button
-                onclick={sprayToken}
-                label="Spray Token"
-                className={clsx('self-center my-5 w-36')}
-                disabled={isLoadingTokenDisperse || isLoading}
-              />
-            ) : (
-              <Button
-                onclick={approveTransaction}
-                label="Approve Token"
-                className={clsx('self-center my-5 w-36')}
-                disabled={isLoadingApproval || isLoading}
-              />
-            )}
+            <Steps
+              show={isLoading}
+              condition={readyToSpray === 'success'}
+              successMessage="Approved amount for spray"
+              loadingMessage="Approving amount for spray"
+            />
+
+            <Steps
+              show={isLoading}
+              condition={readyToNotify === 'success'}
+              successMessage="Successful Spray"
+              loadingMessage="Spraying tokens"
+            />
+
+            <Button
+              onclick={sprayit}
+              label="Spray Token"
+              className={clsx('self-center my-5 w-36')}
+              disabled={isLoading}
+            />
           </div>
         </div>
       ) : null}
