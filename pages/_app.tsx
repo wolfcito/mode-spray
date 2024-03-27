@@ -54,6 +54,9 @@ const ScaffoldEthAppWithProviders = (props: AppProps) => {
         chains={appChains.chains}
         avatar={BlockieAvatar}
         theme={isDarkTheme ? darkTheme() : lightTheme()}
+        modalSize="compact"
+        coolMode
+        initialChain={appChains.chains[1]}
       >
         <ScaffoldEthApp {...props} />
       </RainbowKitProvider>
