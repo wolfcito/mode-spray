@@ -104,9 +104,4 @@ Mode Spray is a dApp that simplifies the process of sending tokens on Mode. The 
 0xf6B8cf99E3e4F461d0e7081c506115042Fb72a04&0.001
 ```
 
-## Features
-
-- **Intuitive User Interface:** The app provides an easy-to-use interface for inputting recipient ETH addresses, the amount of ETH to send, and the gas to be paid.
-- **Efficient Sending Process:** Utilizes a streamlined sending process that minimizes the amount of gas required for transactions.
-
 
