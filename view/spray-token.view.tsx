@@ -98,7 +98,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     functionName: 'approve',
     abi: erc20ABI,
     address: tokenSelected.tokenAddress,
-    args: [deployedInfo?.address, totalcost * 2n],
+    args: [deployedInfo?.address, totalcost],
   })
 
   const { writeAsync: sendToken, isError: isSendTokenError } = useScaffoldContractWrite({
