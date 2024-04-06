@@ -138,7 +138,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
 
         showSuccessModal({ infotxns: data, blockhash: blockhash })
         setNeadyToNotify('success')
-        sendNotifications(data)
+        sendNotifications(data, blockhash as string)
 
         return 'success' as sprayStatus
       } catch (e: any) {
@@ -172,7 +172,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     setIsLoading(false)
   }
 
-  const sendNotifications = async (hashTxn: AddressProp) => {
+  const sendNotifications = async (hashTxn: AddressProp, blockhash: string) => {
     if (!dataClient) return
     const network = await dataClient.getChainId()
 
@@ -207,13 +207,13 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
       return
     }
 
-    const cta = 'https://spray.mundovirtual.solutions/'
+    const cta = blockhash ?? 'https://modespray.xyz/'
     const senderTitle = `💰 Spray successful ${sender.total} ${sender.symbol}!`
     const senderBody = `[${format(new Date(), 'MMM dd yyyy hh:mm')}]: You have successfully sent  💰 ${sender.total} ${
       sender.symbol
     }!`
 
-    sprayChannel.channel.send([sender.address], {
+    sprayChannel.channel.send([dataClient.account.address, sender.address], {
       notification: {
         title: senderTitle,
         body: senderBody,
