@@ -4,6 +4,7 @@ import balIcon from '~~/mode/coins/bal-coin.png'
 import daiIcon from '~~/mode/coins/dai-coin.png'
 import ezethIcon from '~~/mode/coins/ezeth-coin.png'
 import linkIcon from '~~/mode/coins/link-coin.png'
+import mochadIcon from '~~/mode/coins/mochad-coin.png'
 import snxIcon from '~~/mode/coins/snx-coin.png'
 import uniIcon from '~~/mode/coins/uni-coin.png'
 import usdcIcon from '~~/mode/coins/usdc-coin.png'
@@ -36,6 +37,12 @@ export const officialTokenByChain: OfficialTokensProps[] = [
     symbol: 'USDT',
     address: '0xf0F161fDA2712DB8b566946122a5af183995e2eD',
     icon: usdtIcon,
+  },
+  {
+    chainId: 34443,
+    symbol: 'MOCHAD',
+    address: '0xcDa802a5BFFaa02b842651266969A5Bba0c66D3e',
+    icon: mochadIcon,
   },
   {
     chainId: 34443,
