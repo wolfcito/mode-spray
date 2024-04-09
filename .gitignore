@@ -43,3 +43,5 @@ yarn-error.log*
 out/**
 
 .env
+
+x-file/
