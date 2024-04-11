@@ -45,30 +45,6 @@ interface Fee {
   value: string
 }
 
-interface To {
-  ens_domain_name: any
-  hash: string
-  implementation_name: any
-  is_contract: boolean
-  is_verified: boolean
-  name: any
-  private_tags: any[]
-  public_tags: any[]
-  watchlist_names: any[]
-}
-
-interface From {
-  ens_domain_name: any
-  hash: string
-  implementation_name: any
-  is_contract: boolean
-  is_verified: boolean
-  name: any
-  private_tags: any[]
-  public_tags: any[]
-  watchlist_names: any[]
-}
-
 export interface TokenTransfer {
   block_hash: string
   from: From
@@ -129,4 +105,36 @@ export interface NotificationByAddress {
 interface Notification {
   body: string
   title: string
+}
+
+// notificaction NotificationsProps ETH
+
+export interface NotificationETHProps {
+  block: number
+  created_contract: any
+  error: any
+  from: From
+  gas_limit: string
+  index: number
+  success: boolean
+  timestamp: string
+  to: To
+  transaction_hash: string
+  type: string
+  value: string
+}
+
+type From = AddressInfo
+type To = AddressInfo
+
+interface AddressInfo {
+  ens_domain_name: any
+  hash: string
+  implementation_name: any
+  is_contract: boolean
+  is_verified: boolean
+  name: any
+  private_tags: any[]
+  public_tags: any[]
+  watchlist_names: any[]
 }
