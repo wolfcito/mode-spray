@@ -24,7 +24,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [confirmtnxs, setConfirmtnxs] = useState<boolean>(false)
   const [readyToSpray, setReadyToSpray] = useState<sprayStatus>('default')
-  const [readyToNotify, setNeadyToNotify] = useState<sprayStatus>('default')
+  const [readyToNotify, setReadyToNotify] = useState<sprayStatus>('default')
 
   const [alltxns, setAlltxns] = useState<string>('')
 
@@ -137,7 +137,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
         const blockhash = await getBlockexplorerTxnLink(data)
 
         showSuccessModal({ infotxns: data, blockhash: blockhash })
-        setNeadyToNotify('success')
+        setReadyToNotify('success')
         sendNotifications(data, blockhash as string)
 
         return 'success' as sprayStatus
@@ -145,7 +145,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
         const message = getParsedError(e)
         notification.error(message)
         setIsLoading(false)
-        setNeadyToNotify('error')
+        setReadyToNotify('error')
       }
     }
   }
@@ -161,13 +161,13 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     }
     setReadyToSpray('success')
 
-    setNeadyToNotify('loading')
+    setReadyToNotify('loading')
     if ((await sprayToken()) !== 'success' || isSendTokenError) {
-      setNeadyToNotify('default')
+      setReadyToNotify('default')
       setIsLoading(false)
       return
     }
-    setNeadyToNotify('default')
+    setReadyToNotify('default')
 
     setIsLoading(false)
   }
@@ -183,7 +183,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING })
 
     const { items } = await fetch(linkTx).then(res => res.json())
-    if (!items || !items.length) {
+    if (!items?.length) {
       logger.log('No transactions found.')
       return
     }
