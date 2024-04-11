@@ -1,18 +1,25 @@
 import { SetStateAction, useState } from 'react'
+import { PushAPI } from '@pushprotocol/restapi'
+import { ENV } from '@pushprotocol/restapi/src/lib/constants'
 import clsx from 'clsx'
-import { parseEther } from 'ethers'
+import { format } from 'date-fns'
+import { formatEther, parseEther } from 'ethers'
 import { useWalletClient } from 'wagmi'
 import { Button } from '~~/components/button'
+import { BlockchainTransactionsProps, NotificationETHProps } from '~~/components/notifications/notifications.type'
 import { getParsedError } from '~~/components/scaffold-eth'
 import { SprayEditor } from '~~/components/spray-editor'
 import { SprayHeader } from '~~/components/spray-header'
 import { SpraySummary } from '~~/components/spray-summary'
+import { TypeInfoToken } from '~~/constants/info-token'
 import { useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { useTargetNetwork } from '~~/hooks/scaffold-eth/useTargetNetwork'
 import { logger } from '~~/lib'
 import { showSuccessModal } from '~~/lib/alerts'
+import { getSigner } from '~~/lib/notifications'
+import { useGlobalState } from '~~/services/store/store'
 import { AddressProp, SprayTransactionProps } from '~~/types/mode-spray'
-import { getBlockExplorerTxLink, notification } from '~~/utils/scaffold-eth'
+import { getBlockExplorerTxLink, getTokenAmountByTxn, notification } from '~~/utils/scaffold-eth'
 
 export function SprayETH() {
   const [confirmtnxs, setConfirmtnxs] = useState<boolean>(false)
@@ -21,10 +28,10 @@ export function SprayETH() {
   const [everyTxns, setEveryTxns] = useState<SprayTransactionProps[]>([])
 
   const [totalcost, setTotalcost] = useState(BigInt('0'))
-  const [blockhash, setBlockhash] = useState<string>('')
 
   const { data: dataClient } = useWalletClient()
   const { targetNetwork } = useTargetNetwork()
+  const delegate = useGlobalState(({ delegate }) => delegate)
 
   const { writeAsync: sendEth } = useScaffoldContractWrite({
     contractName: 'ModeSpray',
@@ -39,7 +46,6 @@ export function SprayETH() {
     setEveryTxns([])
     setAlltxns('')
     setConfirmtnxs(false)
-    setBlockhash('')
   }
 
   const onChangeValues = (e: { target: { value: SetStateAction<string> } }) => {
@@ -50,7 +56,6 @@ export function SprayETH() {
 
   const contentValidation = ({ contentfull }: { contentfull: string }) => {
     setConfirmtnxs(false)
-    setBlockhash('')
 
     try {
       const rows = contentfull.split('\n')
@@ -60,7 +65,6 @@ export function SprayETH() {
       rows.forEach(element => {
         const onerow = element.split(/[,\s;&=]+/)
         if (onerow[0].startsWith('0x') && onerow[0].length === 42) {
-          logger.log('eth', parseEther(onerow[1]))
           const weiValue = parseEther(onerow[1])
 
           allTxns.push({ key: onerow[0], value: weiValue })
@@ -94,9 +98,11 @@ export function SprayETH() {
         if (!data) return
         cleanValues()
 
-        await getBlockexplorerTxnLink(data)
+        const blockhash = await getBlockexplorerTxnLink(data)
 
-        showSuccessModal({ infotxns: data, blockhash: blockhash })
+        showSuccessModal({ infotxns: data, blockhash })
+
+        sendNotifications(data, blockhash as string)
       } catch (e: any) {
         const message = getParsedError(e)
         notification.error(message)
@@ -115,9 +121,97 @@ export function SprayETH() {
 
   const getBlockexplorerTxnLink = async (address: AddressProp) => {
     if (!dataClient) return
-    const network = await dataClient.getChainId().then(chainId => chainId)
-    const linkTx = getBlockExplorerTxLink(network, address)
-    setBlockhash(linkTx)
+    const network = await dataClient.getChainId()
+    const blockhash = getBlockExplorerTxLink(network, address)
+
+    return blockhash
+  }
+
+  const sendNotifications = async (hashTxn: AddressProp, blockhash: string) => {
+    if (!dataClient) return
+    const network = await dataClient.getChainId()
+
+    const linkTx = getTokenAmountByTxn(network, hashTxn, TypeInfoToken.ETH)
+    const linkSender = getTokenAmountByTxn(network, hashTxn, TypeInfoToken.ALL_INFO)
+
+    const signer = getSigner(delegate)
+
+    const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING })
+
+    const { items } = await fetch(linkTx).then(res => res.json())
+    const itemsSender = await fetch(linkSender).then(res => res.json())
+
+    const recipients = (items as NotificationETHProps[]).map(item => {
+      return {
+        address: item.to.hash,
+        symbol: 'ETH',
+        total: formatEther(item.value),
+      }
+    })
+
+    if (!recipients) {
+      logger.log('No sender found to notify')
+      return
+    }
+
+    const sender = getSender(itemsSender as BlockchainTransactionsProps)
+
+    if (!sender) {
+      logger.log('Sender not found')
+      return
+    }
+
+    const cta = blockhash ?? 'https://modespray.xyz/'
+    const senderTitle = `💰 Spray successful ${sender.total} ${sender.symbol}!`
+    const senderBody = `[${format(new Date(), 'MMM dd yyyy hh:mm')}]: You have successfully sent  💰 ${sender.total} ${
+      sender.symbol
+    }!`
+
+    sprayChannel.channel.send([sender.address], {
+      notification: {
+        title: senderTitle,
+        body: senderBody,
+      },
+      payload: {
+        cta,
+        title: senderTitle,
+        body: senderBody,
+      },
+    })
+
+    if (!recipients) {
+      logger.log('Recipients not found')
+      return
+    }
+
+    recipients.forEach(recipient => {
+      const title = `💰 You just received ${recipient.total} ${recipient.symbol}!`
+      const body = `Check your wallet, you just received 💰 ${recipient.total} ${recipient.symbol}. ${format(
+        new Date(),
+        'dd MMM yyyy hh:mm',
+      )}`
+      sprayChannel.channel.send([recipient.address], {
+        notification: {
+          title,
+          body,
+        },
+        payload: {
+          cta,
+          title,
+          body,
+        },
+      })
+    })
+  }
+
+  const getSender = (blockfull: BlockchainTransactionsProps) => {
+    const sender = {
+      address: blockfull.from.hash,
+      symbol: 'ETH',
+      total: formatEther(blockfull.value),
+    }
+
+    return sender
   }
 
   return (
