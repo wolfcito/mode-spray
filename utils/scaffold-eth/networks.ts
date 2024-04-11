@@ -1,4 +1,5 @@
 import * as chains from 'viem/chains'
+import { TypeInfoToken } from '~~/constants'
 import scaffoldConfig from '~~/scaffold.config'
 
 type ChainAttributes = {
@@ -114,7 +115,8 @@ export function getTargetNetworks(): ChainWithAttributes[] {
 /**
  * Get the token amount by txn hash
  */
-export function getTokenAmountByTxn(chainId: number, txnHash: string) {
+
+export function getTokenAmountByTxn(chainId: number, txnHash: string, typeInfoToken: TypeInfoToken) {
   const chainNames = Object.keys(chains)
 
   const targetChainArr = chainNames.filter(chainName => {
@@ -134,31 +136,14 @@ export function getTokenAmountByTxn(chainId: number, txnHash: string) {
     return ''
   }
 
-  return `${blockExplorerTxURL}/api/v2/transactions/${txnHash}/token-transfers?type=ERC-20`
-}
-
-/**
- * Get the ETH amount by txn hash
- */
-export function getETHAmountByTxn(chainId: number, txnHash: string) {
-  const chainNames = Object.keys(chains)
-
-  const targetChainArr = chainNames.filter(chainName => {
-    const wagmiChain = chains[chainName as keyof typeof chains]
-    return wagmiChain.id === chainId
-  })
-
-  if (targetChainArr.length === 0) {
-    return ''
+  if (typeInfoToken === TypeInfoToken.ERC20) {
+    return `${blockExplorerTxURL}/api/v2/transactions/${txnHash}/token-transfers?type=ERC-20`
   }
-
-  const targetChain = targetChainArr[0] as keyof typeof chains
-  // @ts-expect-error : ignoring error since `blockExplorers` key may or may not be present on some chains
-  const blockExplorerTxURL = chains[targetChain]?.blockExplorers?.default?.url
-
-  if (!blockExplorerTxURL) {
-    return ''
+  if (typeInfoToken === TypeInfoToken.ETH) {
+    return `${blockExplorerTxURL}/api/v2/transactions/${txnHash}/internal-transactions`
   }
-
-  return `${blockExplorerTxURL}/api/v2/transactions/${txnHash}`
+  if (typeInfoToken === TypeInfoToken.ALL_INFO) {
+    return `${blockExplorerTxURL}/api/v2/transactions/${txnHash}`
+  }
+  return ''
 }
