@@ -12,6 +12,7 @@ import { SprayEditor } from '~~/components/spray-editor'
 import { SprayHeader } from '~~/components/spray-header'
 import { SpraySummary } from '~~/components/spray-summary'
 import { Steps } from '~~/components/steps'
+import { TypeInfoToken } from '~~/constants/info-token'
 import { useDeployedContractInfo, useScaffoldContractRead, useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { logger } from '~~/lib'
 import { showSuccessModal } from '~~/lib/alerts'
@@ -176,7 +177,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
     if (!dataClient) return
     const network = await dataClient.getChainId()
 
-    const linkTx = getTokenAmountByTxn(network, hashTxn)
+    const linkTx = getTokenAmountByTxn(network, hashTxn, TypeInfoToken.ERC20)
 
     const signer = getSigner(delegate)
 
