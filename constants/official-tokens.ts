@@ -1,17 +1,18 @@
 import { OfficialTokensProps } from './official-tokens.type'
-import aaveIcon from '~~/mode/coins/aave-coin.png'
-import balIcon from '~~/mode/coins/bal-coin.png'
-import daiIcon from '~~/mode/coins/dai-coin.png'
-import ezethIcon from '~~/mode/coins/ezeth-coin.png'
-import linkIcon from '~~/mode/coins/link-coin.png'
-import mochadIcon from '~~/mode/coins/mochad-coin.png'
-import snxIcon from '~~/mode/coins/snx-coin.png'
-import uniIcon from '~~/mode/coins/uni-coin.png'
-import usdcIcon from '~~/mode/coins/usdc-coin.png'
-import usdtIcon from '~~/mode/coins/usdt-coin.png'
-import wbtcIcon from '~~/mode/coins/wbtc-coin.png'
-import wethIcon from '~~/mode/coins/weth-coin.png'
-import defaultIcon from '~~/mode/coins/wolf-coin.png'
+import degenIcon from '~~/coins/base-degen-coin.png'
+import aaveIcon from '~~/coins/mode-aave-coin.png'
+import balIcon from '~~/coins/mode-bal-coin.png'
+import daiIcon from '~~/coins/mode-dai-coin.png'
+import ezethIcon from '~~/coins/mode-ezeth-coin.png'
+import linkIcon from '~~/coins/mode-link-coin.png'
+import mochadIcon from '~~/coins/mode-mochad-coin.png'
+import snxIcon from '~~/coins/mode-snx-coin.png'
+import uniIcon from '~~/coins/mode-uni-coin.png'
+import usdcIcon from '~~/coins/mode-usdc-coin.png'
+import usdtIcon from '~~/coins/mode-usdt-coin.png'
+import wbtcIcon from '~~/coins/mode-wbtc-coin.png'
+import wethIcon from '~~/coins/mode-weth-coin.png'
+import defaultIcon from '~~/coins/mode-wolf-coin.png'
 
 export const officialTokenByChain: OfficialTokensProps[] = [
   {
@@ -97,5 +98,17 @@ export const officialTokenByChain: OfficialTokensProps[] = [
     symbol: 'AAVE',
     address: '0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2',
     icon: aaveIcon,
+  },
+  {
+    chainId: 84532,
+    symbol: 'USDC.m',
+    address: '0xfE8Ae0606Bd37DA4ab2886F7824ab82A2d0Ef582',
+    icon: defaultIcon,
+  },
+  {
+    chainId: 8453,
+    symbol: 'Degen',
+    address: '0x4ed4e862860bed51a9570b96d89af5e1b0efefed',
+    icon: degenIcon,
   },
 ]
