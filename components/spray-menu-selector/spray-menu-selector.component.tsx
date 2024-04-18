@@ -28,7 +28,7 @@ export function SprayMenuSelector({
         <ItemCoin
           condition={!isCustom}
           onclick={() => toggleEth(false)}
-          classname={clsx('grayscale hover:grayscale-0 hover:text-white', {
+          classname={clsx('grayscale hover:grayscale-0 hover:text-white hover:scale-125', {
             'grayscale-0': !isCustom,
           })}
         >
@@ -47,7 +47,7 @@ export function SprayMenuSelector({
               })
               toggleEth(true)
             }}
-            classname={clsx('grayscale hover:grayscale-0 hover:text-white', {
+            classname={clsx('grayscale hover:grayscale-0 hover:text-white hover:scale-125', {
               'grayscale-0': isCustom && tokenSelected.tokenAddress === token.address,
             })}
           >

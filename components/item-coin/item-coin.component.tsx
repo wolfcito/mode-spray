@@ -5,9 +5,9 @@ export function ItemCoin({ condition, onclick, children, classname }: ItemCoinPr
   return (
     <li
       className={clsx(
-        'flex rounded-sm hover:rounded-sm min-w-24 hover:bg-neutral py-1 hover:cursor-pointer justify-center items-center flex-col',
+        'flex rounded-sm hover:rounded-sm min-w-24 py-3 hover:cursor-pointer justify-center items-center flex-col ease-in-out duration-300',
         {
-          'text-neutral-content skeleton rounded-sm bg-neutral': condition,
+          'text-neutral-content skeleton rounded-sm': condition,
         },
         classname,
       )}
