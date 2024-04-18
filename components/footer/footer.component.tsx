@@ -1,7 +1,8 @@
 import React from 'react'
+import Image from 'next/image'
 import { nanoid } from 'nanoid'
 import { colophon } from '~~/constants'
-import { ModeIcon, PushIcon } from '~~/icons'
+import * as ModePush from '~~/mode/mode-push.png'
 
 export function Footer() {
   return (
@@ -18,9 +19,8 @@ export function Footer() {
         ))}
       </div>
 
-      <div className="flex h-20">
-        <PushIcon className="w-20 p-0 mr-5" />
-        <ModeIcon className="w-20 p-0" />
+      <div className="flex h-9">
+        <Image src={ModePush} className="w-40 h-auto" alt="mode + push + spray" width={200} height={34} />
       </div>
     </footer>
   )
