@@ -20,7 +20,7 @@ export function Footer() {
       </div>
 
       <div className="flex h-9">
-        <Image src={ModePush} className="w-40 h-auto" alt="mode + push + spray" width={200} height={34} />
+        <Image src={ModePush} className="w-40 h-auto grayscale" alt="mode + push + spray" width={200} height={34} />
       </div>
     </footer>
   )
