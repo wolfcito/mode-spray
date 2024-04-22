@@ -3,9 +3,7 @@ import { GetStaticProps } from 'next'
 import { useNetwork } from 'wagmi'
 import { MetaHeader } from '~~/components/header'
 import { SprayMenuSelector } from '~~/components/spray-menu-selector'
-import { WrongNetwork } from '~~/components/wrong-network'
 import { useTargetNetwork } from '~~/hooks/scaffold-eth/useTargetNetwork'
-import { logger } from '~~/lib'
 import { useGlobalState } from '~~/services/store/store'
 import { TokenSelectedProps } from '~~/types/mode-spray'
 import { SprayETH, SprayToken } from '~~/view'
@@ -24,11 +22,6 @@ export default function Home({ delegateNotificator }: HomeProps) {
     setIsCustom(false)
   }, [targetNetwork.id, chain?.id])
 
-  if (chain?.id !== targetNetwork.id) {
-    logger.info('You are on the wrong network', chain, targetNetwork)
-    return <WrongNetwork />
-  }
-
   const toggleEth = (isEth: boolean) => {
     setIsCustom(isEth)
   }
@@ -40,7 +33,7 @@ export default function Home({ delegateNotificator }: HomeProps) {
         <div className="w-full p-2 rounded-t-3xl bg-black/20 backdrop-blur-sm">
           <div className="flex flex-col pb-2 space-y-3 rounded-3xl">
             <SprayMenuSelector
-              filterNumber={chain?.id}
+              filterNumber={chain?.id ?? 1}
               isCustom={isCustom}
               networkName={targetNetwork.name}
               toggleEth={toggleEth}
