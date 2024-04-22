@@ -23,7 +23,7 @@ module.exports = {
           info: '#C8F5FF',
           success: '#65D072',
           warning: '#F4BF4F',
-          error: '#EC6A5E',
+          error: '#ff0420',
 
           '--rounded-btn': '9999rem',
 
@@ -78,7 +78,7 @@ module.exports = {
       fontFamily: {
         'ibm-mono': ['IBM Plex Mono', 'monospace'],
         'ibm-sans': ['IBM Plex Sans', 'sans-serif'],
-        'chakra': ['Chakra Petch', 'sans-serif'],
+        chakra: ['Chakra Petch', 'sans-serif'],
         VT323: ['VT323', 'monospace'],
       },
       boxShadow: {
