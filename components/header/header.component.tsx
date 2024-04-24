@@ -1,10 +1,12 @@
 import React, { useCallback, useRef, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { HeaderMenuLinks } from './header-menu-links.component'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 import { ButtonWrapper } from '~~/components/button-wrapper'
 import { FaucetButton, RainbowKitCustomConnectButton } from '~~/components/scaffold-eth'
 import { useOutsideClick } from '~~/hooks/scaffold-eth'
+import sprayIcon from '~~/public/favicon.png'
 
 export function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -41,7 +43,8 @@ export function Header() {
         </div>
         <Link href="/" passHref className="items-center hidden gap-2 ml-4 mr-6 lg:flex shrink-0">
           <div className="flex items-center group">
-            <span className="text-3xl font-bold leading-tight font-chakra">SPRAY</span>
+            <Image src={sprayIcon} alt="icon of Mode Spray" width={28} height={28} />
+            <span className="ml-2 text-3xl font-bold leading-tight font-chakra">SPRAY</span>
             <div className="flex items-center transition duration-500 ease-in-out opacity-0 group-hover:opacity-100">
               <div aria-label="divider" className="w-6 h-px mx-2 bg-neutral-700"></div>
               <span className="font-mono text-sm text-neutral">spray ether or tokens to multiple addresses</span>
@@ -52,7 +55,7 @@ export function Header() {
       <div className="flex-grow mr-4 navbar-end">
         <ButtonWrapper>
           <Link href="https://ref.mode.network/TxPKPD" passHref target="_blank" rel="noreferrer">
-            <span className="leading-tight font-chakra text-neutral-content">AIRDROP</span>
+            <span className="leading-tight font-chakra text-neutral-content">Mode Aidrop</span>
           </Link>
         </ButtonWrapper>
         <RainbowKitCustomConnectButton />

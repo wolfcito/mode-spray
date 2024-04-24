@@ -1,5 +1,6 @@
 import * as chains from 'viem/chains'
 import { TypeInfoToken } from '~~/constants'
+import { modeMainnet } from '~~/contracts/mode-mainnet.chain'
 import scaffoldConfig from '~~/scaffold.config'
 
 type ChainAttributes = {
@@ -8,6 +9,7 @@ type ChainAttributes = {
   // Used to fetch price by providing mainnet token address
   // for networks having native currency other than ETH
   nativeCurrencyTokenAddress?: string
+  iconUrl?: string
 }
 
 export type ChainWithAttributes = chains.Chain & Partial<ChainAttributes>
@@ -56,6 +58,14 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   },
   [chains.scrollSepolia.id]: {
     color: '#fbebd4',
+  },
+  [chains.modeTestnet.id]: {
+    color: '#DFFE00',
+    iconUrl: 'https://modespray.xyz/mode/mode-chain.png',
+  },
+  [modeMainnet.id]: {
+    color: '#DFFE00',
+    iconUrl: 'https://modespray.xyz/mode/mode-chain.png',
   },
 }
 

@@ -1,10 +1,11 @@
 import { useCallback, useState } from 'react'
+import Image from 'next/image'
 import { AddressInfoDropdown } from './AddressInfoDropdown'
 import { AddressQRCodeModal } from './AddressQRCodeModal'
 import { WrongNetworkDropdown } from './WrongNetworkDropdown'
 import { PushAPI } from '@pushprotocol/restapi'
 import { ENV } from '@pushprotocol/restapi/src/lib/constants'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { ConnectButton, useChainModal } from '@rainbow-me/rainbowkit'
 import { Address } from 'viem'
 import { useWalletClient } from 'wagmi'
 import { ButtonWrapper } from '~~/components/button-wrapper'
@@ -28,6 +29,8 @@ export const RainbowKitCustomConnectButton = () => {
   const [notificationList, setNotificationList] = useState<any>([])
   const delegate = useGlobalState(({ delegate }) => delegate)
   const datosClient = useWalletClient()
+
+  const { openChainModal } = useChainModal()
 
   const notificationsByType = useCallback(async () => {
     const signer = getSigner(delegate)
@@ -79,7 +82,7 @@ export const RainbowKitCustomConnectButton = () => {
 
               return (
                 <>
-                  <ButtonWrapper classname="!py-0 !px-1 !flex">
+                  <ButtonWrapper classname="!py-0 !px-0 !flex">
                     <input
                       id="notification-panel"
                       type="checkbox"
@@ -91,7 +94,15 @@ export const RainbowKitCustomConnectButton = () => {
                     </label>
                     <Notifications notificationList={notificationList} />
                   </ButtonWrapper>
-
+                  <ButtonWrapper onclick={openChainModal}>
+                    <Image
+                      src={targetNetwork.iconUrl ?? ''}
+                      className="h-7 w-7"
+                      alt="icon chain"
+                      width={28}
+                      height={28}
+                    />
+                  </ButtonWrapper>
                   <ButtonWrapper classname="!p-2">
                     <div className="flex flex-col items-center mr-1">
                       <Balance address={account.address as Address} className="h-auto min-h-0" />
