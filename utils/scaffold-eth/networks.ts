@@ -67,6 +67,14 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
     color: '#DFFE00',
     iconUrl: 'https://modespray.xyz/mode/mode-chain.png',
   },
+  [chains.base.id]: {
+    color: '#fbebd4',
+    iconUrl: 'https://modespray.xyz/base/base-chain.png',
+  },
+  [chains.baseSepolia.id]: {
+    color: '#fbebd4',
+    iconUrl: 'https://modespray.xyz/base/base-chain.png',
+  },
 }
 
 /**

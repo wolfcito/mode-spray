@@ -1,5 +1,5 @@
 {
   "name": "Mode Spray",
-  "description": "Spray tokens or ether to multiple address on the mode network",
-  "iconPath": "logo.svg"
+  "description": "Spray Tokens ERC20 or Ether to multiple wallet addresses in a single click.",
+  "iconPath": "favicon.png"
 }

@@ -13,8 +13,8 @@ const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT
 
 export const MetaHeader = ({
   title = 'Mode Spray',
-  description = 'Spray tokens or ether to multiple address on the mode network',
-  image = 'thumbnail.jpg',
+  description = 'Spray Tokens ERC20 or Ether to multiple wallet addresses in a single click.',
+  image = 'thumbnail.png',
   twitterCard = 'summary_large_image',
   children,
 }: MetaHeaderProps) => {
