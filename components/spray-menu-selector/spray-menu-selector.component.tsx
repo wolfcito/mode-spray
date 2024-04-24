@@ -1,10 +1,10 @@
 import { SprayMenuSelectorProps } from './spray-menu-selector.type'
 import clsx from 'clsx'
 import { nanoid } from 'nanoid'
+import ethIcon from '~~/coins/ethereum-coin.png'
 import { IconCoin } from '~~/components/icon-coin'
 import { ItemCoin } from '~~/components/item-coin'
 import { officialTokenByChain } from '~~/constants'
-import ethIcon from '~~/mode/coins/eth-coin.png'
 import { AddressProp } from '~~/types/mode-spray'
 
 const iconClass = 'grayscale hover:grayscale-0 hover:text-white'
