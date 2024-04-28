@@ -13,6 +13,7 @@ import usdtIcon from '~~/coins/mode-usdt-coin.png'
 import wbtcIcon from '~~/coins/mode-wbtc-coin.png'
 import wethIcon from '~~/coins/mode-weth-coin.png'
 import defaultIcon from '~~/coins/mode-wolf-coin.png'
+import optimismIcon from '~~/coins/optimism-op-coin.png'
 
 export const officialTokenByChain: OfficialTokensProps[] = [
   {
@@ -110,5 +111,17 @@ export const officialTokenByChain: OfficialTokensProps[] = [
     symbol: 'Degen',
     address: '0x4ed4e862860bed51a9570b96d89af5e1b0efefed',
     icon: degenIcon,
+  },
+  {
+    chainId: 11155420,
+    symbol: 'USDC.m',
+    address: '0x2bC5313c164F7FafDa7629fb7942226fd3921904',
+    icon: defaultIcon,
+  },
+  {
+    chainId: 10,
+    symbol: 'OP',
+    address: '0x4200000000000000000000000000000000000042',
+    icon: optimismIcon,
   },
 ]
