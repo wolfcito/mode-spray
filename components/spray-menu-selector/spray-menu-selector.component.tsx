@@ -32,7 +32,7 @@ export function SprayMenuSelector({
           onclick={() => toggleEth(false)}
           classname={clsx(iconClass, { 'grayscale-0': !isCustom })}
         >
-          <IconCoin icon={ethIcon} symbol={'ETH'} className={clsx({ 'drop-shadow-[0_0px_5px_#00ff59]': !isCustom })} />
+          <IconCoin icon={ethIcon} symbol={'ETH'} className={clsx({ 'drop-shadow-[0_0px_5px_#FFFFFF]': !isCustom })} />
           <div className="text-sm font-chakra">ETH</div>
         </ItemCoin>
 
@@ -54,7 +54,7 @@ export function SprayMenuSelector({
               <IconCoin
                 icon={token.icon}
                 symbol={token.symbol}
-                className={clsx({ 'drop-shadow-[0_0px_5px_#00ff59]': condition })}
+                className={clsx({ 'drop-shadow-[0_0px_5px_#FFFFFF]': condition })}
               />
               <div className="font-mono text-sm">{token.symbol}</div>
             </ItemCoin>
