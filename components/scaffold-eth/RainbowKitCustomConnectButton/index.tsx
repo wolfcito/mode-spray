@@ -70,14 +70,18 @@ export const RainbowKitCustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
+                  <ButtonWrapper classname="!p-2 h-12 w-auto" onclick={openConnectModal}>
                     Connect Wallet
-                  </button>
+                  </ButtonWrapper>
                 )
               }
 
               if (chain.unsupported || chain.id !== targetNetwork.id) {
-                return <WrongNetworkDropdown />
+                return (
+                  <ButtonWrapper classname="!p-2">
+                    <WrongNetworkDropdown />
+                  </ButtonWrapper>
+                )
               }
 
               return (
