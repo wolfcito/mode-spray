@@ -38,12 +38,6 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
     color: '#92D9FA',
     nativeCurrencyTokenAddress: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
   },
-  [chains.optimismGoerli.id]: {
-    color: '#f01a37',
-  },
-  [chains.optimism.id]: {
-    color: '#f01a37',
-  },
   [chains.arbitrumGoerli.id]: {
     color: '#28a0f0',
   },
@@ -61,19 +55,31 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   },
   [chains.modeTestnet.id]: {
     color: '#DFFE00',
-    iconUrl: 'https://modespray.xyz/mode/mode-chain.png',
+    iconUrl: 'https://modespray.xyz/chain/mode-chain.png',
   },
   [modeMainnet.id]: {
     color: '#DFFE00',
-    iconUrl: 'https://modespray.xyz/mode/mode-chain.png',
+    iconUrl: 'https://modespray.xyz/chain/mode-chain.png',
   },
   [chains.base.id]: {
     color: '#fbebd4',
-    iconUrl: 'https://modespray.xyz/base/base-chain.png',
+    iconUrl: 'https://modespray.xyz/chain/base-chain.png',
   },
   [chains.baseSepolia.id]: {
     color: '#fbebd4',
-    iconUrl: 'https://modespray.xyz/base/base-chain.png',
+    iconUrl: 'https://modespray.xyz/chain/base-chain.png',
+  },
+  [chains.optimismGoerli.id]: {
+    color: '#f01a37',
+    iconUrl: 'https://modespray.xyz/chain/optimism-chain.png',
+  },
+  [chains.optimismSepolia.id]: {
+    color: '#f01a37',
+    iconUrl: 'https://modespray.xyz/chain/optimism-chain.png',
+  },
+  [chains.optimism.id]: {
+    color: '#f01a37',
+    iconUrl: 'https://modespray.xyz/chain/optimism-chain.png',
   },
 }
 
