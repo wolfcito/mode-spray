@@ -2,8 +2,8 @@ import * as chains from 'viem/chains'
 
 export const modeMainnet = {
   id: 34443,
-  name: 'Mode Mainnet',
-  network: 'Mode Mainnet',
+  name: 'Mode',
+  network: 'Mode',
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   rpcUrls: {
     default: {
