@@ -12,6 +12,7 @@ import {
   QrCodeIcon,
 } from '@heroicons/react/24/outline'
 import { BlockieAvatar } from '~~/components/scaffold-eth'
+import { baseSiteLink, labeSiteLink } from '~~/constants'
 import { useOutsideClick } from '~~/hooks/scaffold-eth'
 import { getTargetNetworks } from '~~/utils/scaffold-eth'
 
@@ -77,12 +78,14 @@ export const AddressInfoDropdown = ({
             </CopyToClipboard>
           )}
         </li>
+
         <li className={selectingNetwork ? 'hidden' : ''}>
           <label htmlFor="qrcode-modal" className="btn-sm !rounded-sm flex gap-3 py-3">
             <QrCodeIcon className="w-4 h-6 ml-2 sm:ml-0" />
             <span className="whitespace-nowrap">View QR Code</span>
           </label>
         </li>
+
         <li className={selectingNetwork ? 'hidden' : ''}>
           <button className="menu-item btn-sm !rounded-sm flex gap-3 py-3" type="button">
             <ArrowTopRightOnSquareIcon className="w-4 h-6 ml-2 sm:ml-0" />
@@ -91,6 +94,16 @@ export const AddressInfoDropdown = ({
             </a>
           </button>
         </li>
+
+        <li className={selectingNetwork ? 'hidden' : ''}>
+          <button className="menu-item btn-sm !rounded-sm flex gap-3 py-3" type="button">
+            <ArrowTopRightOnSquareIcon className="w-4 h-6 ml-2 sm:ml-0" />
+            <a target="_blank" href={baseSiteLink} rel="noopener noreferrer" className="whitespace-nowrap">
+              {labeSiteLink}
+            </a>
+          </button>
+        </li>
+
         {allowedNetworks.length > 1 ? (
           <li className={selectingNetwork ? 'hidden' : ''}>
             <button
@@ -104,6 +117,7 @@ export const AddressInfoDropdown = ({
             </button>
           </li>
         ) : null}
+
         <li className={selectingNetwork ? 'hidden' : ''}>
           <button
             className="menu-item text-error btn-sm !rounded-sm flex gap-3 py-3"

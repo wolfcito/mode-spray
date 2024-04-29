@@ -1,3 +1,4 @@
+import { enviroment } from './config'
 import { modeMainnet } from './contracts/mode-mainnet.chain'
 import * as chains from 'viem/chains'
 
@@ -13,7 +14,7 @@ export type ScaffoldConfig = {
 const testnets = [chains.modeTestnet, chains.baseSepolia, chains.optimismSepolia]
 const mainnets = [modeMainnet, chains.base, chains.optimism]
 
-const supportedChains = process.env.NEXT_PUBLIC_LAB_ENV === 'lab' ? testnets : mainnets
+const supportedChains = enviroment.lab ? testnets : mainnets
 
 const scaffoldConfig = {
   // The networks on which your DApp is live

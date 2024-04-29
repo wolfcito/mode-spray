@@ -12,6 +12,7 @@ import { SprayEditor } from '~~/components/spray-editor'
 import { SprayHeader } from '~~/components/spray-header'
 import { SpraySummary } from '~~/components/spray-summary'
 import { Steps } from '~~/components/steps'
+import { baseSite } from '~~/constants'
 import { TypeInfoToken } from '~~/constants/info-token'
 import { useDeployedContractInfo, useScaffoldContractRead, useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { logger } from '~~/lib'
@@ -208,7 +209,7 @@ export function SprayToken({ tokenSelected }: { tokenSelected: TokenSelectedProp
       return
     }
 
-    const cta = blockhash ?? 'https://modespray.xyz/'
+    const cta = blockhash ?? baseSite
     const senderTitle = `💰 Spray successful ${sender.total} ${sender.symbol}!`
     const senderBody = `[${format(new Date(), 'MMM dd yyyy hh:mm')}]: You have successfully sent  💰 ${sender.total} ${
       sender.symbol

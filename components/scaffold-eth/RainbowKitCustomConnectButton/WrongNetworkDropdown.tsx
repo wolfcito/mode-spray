@@ -7,7 +7,7 @@ export const WrongNetworkDropdown = () => {
 
   return (
     <div className="mr-2 dropdown dropdown-end">
-      <label tabIndex={0} className="gap-1 rounded-sm btn btn-error btn-sm dropdown-toggle">
+      <label tabIndex={0} className="gap-1 text-white rounded-sm btn btn-sm dropdown-toggle">
         <span>Update Network</span>
         <ChevronDownIcon className="w-4 h-6 ml-2 sm:ml-0" />
       </label>
