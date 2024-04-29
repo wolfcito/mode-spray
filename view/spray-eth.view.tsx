@@ -11,6 +11,7 @@ import { getParsedError } from '~~/components/scaffold-eth'
 import { SprayEditor } from '~~/components/spray-editor'
 import { SprayHeader } from '~~/components/spray-header'
 import { SpraySummary } from '~~/components/spray-summary'
+import { baseSite } from '~~/constants'
 import { TypeInfoToken } from '~~/constants/info-token'
 import { useScaffoldContractWrite } from '~~/hooks/scaffold-eth'
 import { useTargetNetwork } from '~~/hooks/scaffold-eth/useTargetNetwork'
@@ -161,7 +162,7 @@ export function SprayETH() {
       return
     }
 
-    const cta = blockhash ?? 'https://modespray.xyz/'
+    const cta = blockhash ?? baseSite
     const senderTitle = `💰 Spray successful ${sender.total} ${sender.symbol}!`
     const senderBody = `[${format(new Date(), 'MMM dd yyyy hh:mm')}]: You have successfully sent  💰 ${sender.total} ${
       sender.symbol
