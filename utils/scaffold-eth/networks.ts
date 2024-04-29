@@ -1,5 +1,5 @@
 import * as chains from 'viem/chains'
-import { TypeInfoToken } from '~~/constants'
+import { TypeInfoToken, baseSite } from '~~/constants'
 import { modeMainnet } from '~~/contracts/mode-mainnet.chain'
 import scaffoldConfig from '~~/scaffold.config'
 
@@ -55,31 +55,31 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   },
   [chains.modeTestnet.id]: {
     color: '#DFFE00',
-    iconUrl: 'https://modespray.xyz/chain/mode-chain.png',
+    iconUrl: `${baseSite}/chain/mode-chain.png`,
   },
   [modeMainnet.id]: {
     color: '#DFFE00',
-    iconUrl: 'https://modespray.xyz/chain/mode-chain.png',
+    iconUrl: `${baseSite}/chain/mode-chain.png`,
   },
   [chains.base.id]: {
     color: '#fbebd4',
-    iconUrl: 'https://modespray.xyz/chain/base-chain.png',
+    iconUrl: `${baseSite}/chain/base-chain.png`,
   },
   [chains.baseSepolia.id]: {
     color: '#fbebd4',
-    iconUrl: 'https://modespray.xyz/chain/base-chain.png',
+    iconUrl: `${baseSite}/chain/base-chain.png`,
   },
   [chains.optimismGoerli.id]: {
     color: '#f01a37',
-    iconUrl: 'https://modespray.xyz/chain/optimism-chain.png',
+    iconUrl: `${baseSite}/chain/optimism-chain.png`,
   },
   [chains.optimismSepolia.id]: {
     color: '#f01a37',
-    iconUrl: 'https://modespray.xyz/chain/optimism-chain.png',
+    iconUrl: `${baseSite}/chain/optimism-chain.png`,
   },
   [chains.optimism.id]: {
     color: '#f01a37',
-    iconUrl: 'https://modespray.xyz/chain/optimism-chain.png',
+    iconUrl: `${baseSite}/chain/optimism-chain.png`,
   },
 }
 
