@@ -11,7 +11,7 @@ export type ScaffoldConfig = {
   walletAutoConnect: boolean
 }
 
-const testnets = [chains.modeTestnet, chains.baseSepolia, chains.optimismSepolia]
+const testnets = [chains.modeTestnet, chains.baseSepolia, chains.optimismSepolia, chains.scrollSepolia]
 const mainnets = [modeMainnet, chains.base, chains.optimism]
 
 const supportedChains = enviroment.lab ? testnets : mainnets

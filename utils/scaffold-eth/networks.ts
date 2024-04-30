@@ -50,9 +50,6 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   [chains.fantomTestnet.id]: {
     color: '#1969ff',
   },
-  [chains.scrollSepolia.id]: {
-    color: '#fbebd4',
-  },
   [chains.modeTestnet.id]: {
     color: '#DFFE00',
     iconUrl: `${baseSite}/chain/mode-chain.png`,
@@ -80,6 +77,10 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   [chains.optimism.id]: {
     color: '#f01a37',
     iconUrl: `${baseSite}/chain/optimism-chain.png`,
+  },
+  [chains.scrollSepolia.id]: {
+    color: '#fbebd4',
+    iconUrl: `${baseSite}/chain/scroll-chain.png`,
   },
 }
 
