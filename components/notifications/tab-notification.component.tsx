@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid'
 import { useWalletClient } from 'wagmi'
 import { ArrowUpRightIcon, EyeIcon } from '@heroicons/react/24/outline'
 
-export function TabNotification({ notificationList = [] }: { notificationList: NotificationByAddress[] }) {
+export function TabNotification({ notificationList = [] }: TabNotificationProps) {
   const { data: dataClient } = useWalletClient()
 
   if (!notificationList.length) return <div className="flex flex-col w-full gap-4">{`You haven't notifications`}</div>
@@ -14,7 +14,7 @@ export function TabNotification({ notificationList = [] }: { notificationList: N
       <Link
         key={nanoid()}
         className="flex my-1.5 rounded-sm hover:rounded-sm text-neutral-content hover:skeleton"
-        href={`${dataClient?.chain.rpcUrls.default}/address/${dataClient?.account.address}?tab=token_transfers`}
+        href={`${dataClient?.chain.blockExplorers?.default.url}/address/${dataClient?.account.address}?tab=token_transfers`}
         target="_blank"
       >
         <EyeIcon className="w-4 h-6 ml-2 sm:ml-0" />
@@ -41,4 +41,8 @@ export function TabNotification({ notificationList = [] }: { notificationList: N
       })}
     </li>
   )
+}
+
+interface TabNotificationProps {
+  readonly notificationList: NotificationByAddress[]
 }
