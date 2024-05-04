@@ -19,7 +19,16 @@ export function Footer() {
         ))}
       </div>
 
-      <div className="flex h-9">
+      <div
+        className="flex h-9"
+        onClick={() =>
+          window.open(
+            'https://staging.push.org/channels/0x12A2455CCa45D8f6d9149F0e996260Ae49EDA8B4#receive-notifications',
+            '_blank',
+          )
+        }
+        aria-hidden="true"
+      >
         <Image src={ModePush} className="w-40 h-auto grayscale" alt="mode + push + spray" width={200} height={34} />
       </div>
     </footer>
