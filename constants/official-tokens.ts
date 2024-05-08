@@ -2,6 +2,7 @@ import { OfficialTokensProps } from './official-tokens.type'
 import degenIcon from '~~/coins/base-degen-coin.png'
 import aaveIcon from '~~/coins/mode-aave-coin.png'
 import balIcon from '~~/coins/mode-bal-coin.png'
+import modeIcon from '~~/coins/mode-coin.png'
 import daiIcon from '~~/coins/mode-dai-coin.png'
 import ezethIcon from '~~/coins/mode-ezeth-coin.png'
 import linkIcon from '~~/coins/mode-link-coin.png'
@@ -30,6 +31,18 @@ export const officialTokenByChain: OfficialTokensProps[] = [
   },
   {
     chainId: 34443,
+    symbol: 'MODE',
+    address: '0xDfc7C877a950e49D2610114102175A06C2e3167a',
+    icon: modeIcon,
+  },
+  {
+    chainId: 34443,
+    symbol: 'MOCHAD',
+    address: '0xcDa802a5BFFaa02b842651266969A5Bba0c66D3e',
+    icon: mochadIcon,
+  },
+  {
+    chainId: 34443,
     symbol: 'USDC',
     address: '0xd988097fb8612cc24eeC14542bC03424c656005f',
     icon: usdcIcon,
@@ -39,12 +52,6 @@ export const officialTokenByChain: OfficialTokensProps[] = [
     symbol: 'USDT',
     address: '0xf0F161fDA2712DB8b566946122a5af183995e2eD',
     icon: usdtIcon,
-  },
-  {
-    chainId: 34443,
-    symbol: 'MOCHAD',
-    address: '0xcDa802a5BFFaa02b842651266969A5Bba0c66D3e',
-    icon: mochadIcon,
   },
   {
     chainId: 34443,
