@@ -154,13 +154,18 @@ export function getTokenAmountByTxn(chainId: number, txnHash: string, typeInfoTo
     return wagmiChain.id === chainId
   })
 
-  if (targetChainArr.length === 0) {
+  if (targetChainArr.length === 0 && chainId !== modeMainnet.id) {
+    logger.info('Mode mainnet actived')
     return ''
   }
 
   const targetChain = targetChainArr[0] as keyof typeof chains
   // @ts-expect-error : ignoring error since `blockExplorers` key may or may not be present on some chains
-  const blockExplorerTxURL = chains[targetChain]?.blockExplorers?.default?.url
+  let blockExplorerTxURL = chains[targetChain]?.blockExplorers?.default?.url
+
+  if (chainId === modeMainnet.id) {
+    blockExplorerTxURL = modeMainnet.blockExplorers?.default?.url
+  }
 
   if (!blockExplorerTxURL) {
     return ''
