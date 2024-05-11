@@ -44,6 +44,7 @@ export const MetaHeader = ({
       )}
       {twitterCard && <meta name="twitter:card" content={twitterCard} />}
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+      <link rel="manifest" href="/manifest.json" />
       {children}
     </Head>
   )
