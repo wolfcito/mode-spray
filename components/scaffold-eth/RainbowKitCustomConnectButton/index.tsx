@@ -98,7 +98,7 @@ export const RainbowKitCustomConnectButton = () => {
                     </label>
                     <Notifications notificationList={notificationList} />
                   </ButtonWrapper>
-                  <ButtonWrapper onclick={openChainModal}>
+                  <ButtonWrapper onclick={openChainModal} isVisible={false}>
                     <Image
                       src={targetNetwork.iconUrl ?? ''}
                       className="h-7 w-7"
