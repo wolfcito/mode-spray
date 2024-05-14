@@ -47,7 +47,6 @@ const ScaffoldEthAppWithProviders = (props: AppProps) => {
         avatar={BlockieAvatar}
         theme={darkTheme()}
         modalSize="compact"
-        coolMode
         initialChain={appChains.chains[1]}
       >
         <ScaffoldEthApp {...props} />
