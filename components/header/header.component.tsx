@@ -54,7 +54,7 @@ export function Header() {
       </div>
       <div className="flex-grow mr-4 navbar-end">
         <ButtonWrapper>
-          <Link href="https://ref.mode.network/TxPKPD" passHref target="_blank" rel="noreferrer">
+          <Link href="https://ref.mode.network/Mrd3ZK" passHref target="_blank" rel="noreferrer">
             <span className="leading-tight font-chakra text-neutral-content">Mode Season 2 Airdrop</span>
           </Link>
         </ButtonWrapper>
