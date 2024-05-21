@@ -9,7 +9,7 @@ const menuLinks: HeaderMenuLink[] = [
   },
   {
     label: 'Mode Season 2 Airdrop',
-    href: 'https://ref.mode.network/TxPKPD',
+    href: 'https://ref.mode.network/Mrd3ZK',
   },
 ]
 
