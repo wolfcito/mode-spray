@@ -29,6 +29,14 @@ export default function Home({ delegateNotificator }: HomeProps) {
   return (
     <>
       <MetaHeader />
+      <div className="flex items-center justify-center bg-[#dffe00]">
+        <div className="overflow-hidden whitespace-nowrap">
+          <div className="py-1 text-sm text-black marquee">
+            {`This is a laboratory environment designed exclusively for
+            interaction with testnet networks.`}
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col items-center w-full lg:w-[626px] self-center bg-black border border-[#ADB5BD] mx-4 md:mx-2 mt-10 md:mt-10 px-4 md:px-8 py-10 rounded-sm">
         <div className="w-full p-2 rounded-t-3xl bg-black/20 backdrop-blur-sm">
           <div className="flex flex-col pb-2 space-y-3 rounded-3xl">
