@@ -131,4 +131,10 @@ export const officialTokenByChain: OfficialTokensProps[] = [
     address: '0x4200000000000000000000000000000000000042',
     icon: optimismIcon,
   },
+  {
+    chainId: 10,
+    symbol: 'MODE',
+    address: '0x084382D1cc4f4DFD1769b1cC1Ac2A9b1f8365e90',
+    icon: modeIcon,
+  },
 ]
