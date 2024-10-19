@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HeaderMenuLinks } from './header-menu-links.component'
 import { Bars3Icon } from '@heroicons/react/24/outline'
-import { ButtonWrapper } from '~~/components/button-wrapper'
 import { FaucetButton, RainbowKitCustomConnectButton } from '~~/components/scaffold-eth'
 import { useOutsideClick } from '~~/hooks/scaffold-eth'
 import sprayIcon from '~~/public/favicon.png'
@@ -53,11 +52,6 @@ export function Header() {
         </Link>
       </div>
       <div className="flex-grow mr-4 navbar-end">
-        <ButtonWrapper>
-          <Link href="https://ref.mode.network/Mrd3ZK" passHref target="_blank" rel="noreferrer">
-            <span className="leading-tight font-chakra text-neutral-content">Mode Season 2 Airdrop</span>
-          </Link>
-        </ButtonWrapper>
         <RainbowKitCustomConnectButton />
         <FaucetButton />
       </div>

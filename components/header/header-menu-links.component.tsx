@@ -7,10 +7,6 @@ const menuLinks: HeaderMenuLink[] = [
     label: 'Home',
     href: '/',
   },
-  {
-    label: 'Mode Season 2 Airdrop',
-    href: 'https://ref.mode.network/Mrd3ZK',
-  },
 ]
 
 export function HeaderMenuLinks() {
