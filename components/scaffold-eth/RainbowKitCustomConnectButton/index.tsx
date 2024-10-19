@@ -70,7 +70,7 @@ export const RainbowKitCustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <ButtonWrapper classname="!p-2 h-12 w-auto" onclick={openConnectModal}>
+                  <ButtonWrapper classname="!p-2 h-12 w-auto" onclick={openConnectModal} isVisible={false}>
                     Connect Wallet
                   </ButtonWrapper>
                 )
