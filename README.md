@@ -1,3 +1,7 @@
+> ⚠️ Warning: 
+> The code within this repository is provided without any warranties. It is important to note that the code has not been audited for potential security vulnerabilities. Using this code could potentially lead to loss of funds, compromised data, or asset risk. Exercise caution and use this code at your own risk. Please refer to the LICENSE file for details about the terms and conditions.
+
+
 # Mode Spray
 
 Send ETH & ERC20 Tokens to Multiple Addresses
