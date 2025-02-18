@@ -46,7 +46,7 @@ export function Header() {
             <span className="ml-2 text-3xl font-bold leading-tight font-chakra">SPRAY</span>
             <div className="flex items-center transition duration-500 ease-in-out opacity-0 group-hover:opacity-100">
               <div aria-label="divider" className="w-6 h-px mx-2 bg-neutral-700"></div>
-              <span className="font-mono text-sm text-neutral">spray ether or tokens to multiple addresses</span>
+              <span className="font-mono text-sm text-neutral">Spray ether or tokens to multiple addresses V1.0.1</span>
             </div>
           </div>
         </Link>
