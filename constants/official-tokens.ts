@@ -15,6 +15,7 @@ import wbtcIcon from '~~/coins/mode-wbtc-coin.png'
 import wethIcon from '~~/coins/mode-weth-coin.png'
 import defaultIcon from '~~/coins/mode-wolf-coin.png'
 import optimismIcon from '~~/coins/optimism-op-coin.png'
+import gamblIcon from '~~/coins/mode-gambl-coin.jpg'
 
 export const officialTokenByChain: OfficialTokensProps[] = [
   {
@@ -34,6 +35,12 @@ export const officialTokenByChain: OfficialTokensProps[] = [
     symbol: 'MODE',
     address: '0xDfc7C877a950e49D2610114102175A06C2e3167a',
     icon: modeIcon,
+  },
+  {
+    chainId: 34443,
+    symbol: 'GAMBL',
+    address: '0x6bB4a37643e7613E812a8d1aF5E675Cc735EA1E2',
+    icon: gamblIcon,
   },
   {
     chainId: 34443,
