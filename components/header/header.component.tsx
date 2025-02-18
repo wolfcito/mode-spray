@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HeaderMenuLinks } from './header-menu-links.component'
 import { Bars3Icon } from '@heroicons/react/24/outline'
-import { ButtonWrapper } from '~~/components/button-wrapper'
 import { FaucetButton, RainbowKitCustomConnectButton } from '~~/components/scaffold-eth'
 import { useOutsideClick } from '~~/hooks/scaffold-eth'
 import sprayIcon from '~~/public/favicon.png'
@@ -43,7 +42,7 @@ export function Header() {
         </div>
         <Link href="/" passHref className="items-center hidden gap-2 ml-4 mr-6 lg:flex shrink-0">
           <div className="flex items-center group">
-            <Image src={sprayIcon} alt="icon of Mode Spray" width={28} height={28} />
+            <Image src={sprayIcon} alt="icon of Mode Spray" width={28} height={28} fetchPriority="high" />
             <span className="ml-2 text-3xl font-bold leading-tight font-chakra">SPRAY</span>
             <div className="flex items-center transition duration-500 ease-in-out opacity-0 group-hover:opacity-100">
               <div aria-label="divider" className="w-6 h-px mx-2 bg-neutral-700"></div>
@@ -53,11 +52,6 @@ export function Header() {
         </Link>
       </div>
       <div className="flex-grow mr-4 navbar-end">
-        <ButtonWrapper>
-          <Link href="https://ref.mode.network/Mrd3ZK" passHref target="_blank" rel="noreferrer">
-            <span className="leading-tight font-chakra text-neutral-content">Mode Season 2 Airdrop</span>
-          </Link>
-        </ButtonWrapper>
         <RainbowKitCustomConnectButton />
         <FaucetButton />
       </div>
